@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0a0a1a">
+
+    <!-- Primary SEO -->
+    <title>Mystical Orion MBTI Tarot | MBTI 타로 운세 · 사주 · 궁합</title>
+    <meta name="description" content="Free MBTI-personalized tarot readings, Four Pillars (Saju) analysis, zodiac compatibility, and lucky numbers. Available in 7 languages. 무료 MBTI 맞춤 타로, 사주팔자, 궁합, 로또번호 운세.">
+    <meta name="keywords" content="MBTI tarot, tarot reading, fortune telling, saju, four pillars, zodiac, compatibility, horoscope, 타로, 운세, MBTI, 사주, 궁합, 로또, tarot gratis, tarot gratuit, Tarot kostenlos, タロット, 占い">
+    <meta name="author" content="Mystical Orion">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+    <link rel="canonical" href="https://mbtitarot.com/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mbtitarot.com/">
+    <meta property="og:title" content="Mystical Orion MBTI Tarot - Free Personalized Readings">
+    <meta property="og:description" content="Where MBTI personality meets tarot intuition. Get free personalized tarot readings, Saju Four Pillars analysis, and compatibility checks in 7 languages.">
+    <meta property="og:image" content="https://mbtitarot.com/icons/og-image.png">
+    <meta property="og:locale" content="ko_KR">
+    <meta property="og:locale:alternate" content="en_US">
+    <meta property="og:locale:alternate" content="ja_JP">
+    <meta property="og:locale:alternate" content="es_ES">
+    <meta property="og:locale:alternate" content="pt_BR">
+    <meta property="og:locale:alternate" content="fr_FR">
+    <meta property="og:locale:alternate" content="de_DE">
+    <meta property="og:site_name" content="Mystical Orion MBTI Tarot">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Mystical Orion MBTI Tarot - Free Personalized Readings">
+    <meta name="twitter:description" content="MBTI × Tarot × Zodiac × Saju — personalized fortune readings in 7 languages.">
+    <meta name="twitter:image" content="https://mbtitarot.com/icons/og-image.png">
+
+    <!-- Multilingual hreflang -->
+    <link rel="alternate" hreflang="ko" href="https://mbtitarot.com/?lang=ko">
+    <link rel="alternate" hreflang="en" href="https://mbtitarot.com/?lang=en">
+    <link rel="alternate" hreflang="ja" href="https://mbtitarot.com/?lang=ja">
+    <link rel="alternate" hreflang="es" href="https://mbtitarot.com/?lang=es">
+    <link rel="alternate" hreflang="pt" href="https://mbtitarot.com/?lang=pt">
+    <link rel="alternate" hreflang="fr" href="https://mbtitarot.com/?lang=fr">
+    <link rel="alternate" hreflang="de" href="https://mbtitarot.com/?lang=de">
+    <link rel="alternate" hreflang="x-default" href="https://mbtitarot.com/">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Mystical Orion MBTI Tarot",
+      "alternateName": ["신비로운 오리온 MBTI 타로", "MBTI タロット占い", "MBTI Tarot Gratis"],
+      "description": "Free MBTI-personalized tarot card readings with Four Pillars (Saju) analysis, zodiac compatibility, and lucky numbers. Available in Korean, English, Japanese, Spanish, Portuguese, French, and German.",
+      "url": "https://mbtitarot.com/",
+      "applicationCategory": "EntertainmentApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "inLanguage": ["ko", "en", "ja", "es", "pt", "fr", "de"],
+      "featureList": [
+        "MBTI-personalized tarot readings",
+        "Four Pillars of Destiny (Saju) analysis",
+        "Zodiac compatibility check",
+        "Lucky number generator",
+        "Daily free tarot card",
+        "78-card Major and Minor Arcana library",
+        "Auspicious date selection"
+      ],
+      "screenshot": "https://mbtitarot.com/icons/og-image.png",
+      "author": {
+        "@type": "Organization",
+        "name": "Mystical Orion",
+        "email": "wo2021@gmail.com"
+      }
+    }
+    </script>
+
+    <!-- Naver / Korean SEO -->
+    <meta name="naver-site-verification" content="">
+    <meta property="naverbot" content="index, follow">
+
+    <!-- Baidu / Yandex -->
+    <meta name="baidu-site-verification" content="">
+
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔮</text></svg>">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- 별 파티클 배경 -->
+<canvas id="particles"></canvas>
+
+<!-- 포인트 헤더 -->
+<div id="points-header" class="points-header" onclick="showPointsInfo()" style="display:none">
+    <span class="points-icon">✦</span>
+    <span id="points-balance">0</span>
+    <span class="points-unit">P</span>
+</div>
+
+<!-- 언어 선택 (최상단) -->
+<div id="lang-bar" class="lang-bar">
+    <button onclick="switchLang('ko')" data-lang-btn="ko">한국어</button>
+    <button onclick="switchLang('en')" data-lang-btn="en">EN</button>
+    <button onclick="switchLang('ja')" data-lang-btn="ja">日本語</button>
+    <button onclick="switchLang('es')" data-lang-btn="es">ES</button>
+    <button onclick="switchLang('pt')" data-lang-btn="pt">PT</button>
+    <button onclick="switchLang('fr')" data-lang-btn="fr">FR</button>
+    <button onclick="switchLang('de')" data-lang-btn="de">DE</button>
+</div>
+
+<!-- ======== 1. 랜딩 화면 ======== -->
+<div id="landing-screen" class="screen active">
+    <div class="landing-content">
+        <div class="logo-area">
+            <div class="logo-symbol">🔮</div>
+            <h1 class="logo-title" data-i18n="app_name">신비로운 오리온<br>MBTI 타로카드</h1>
+            <p class="logo-subtitle">✦ MBTI × TAROT × ZODIAC ✦</p>
+        </div>
+        <p class="logo-desc" data-i18n="landing_desc">
+            MBTI 성격 유형과 타로의 직관이 만나<br>
+            당신만을 위한 운명의 카드를 펼칩니다
+        </p>
+
+        <div class="landing-buttons">
+            <button class="landing-btn primary" onclick="goLanding('reading')">
+                <span class="lb-icon">🔮</span>
+                <div class="lb-body">
+                    <span class="lb-text" data-i18n="landing_reading">타로 점사 보기</span>
+                    <span class="lb-sub" data-i18n="landing_reading_sub">연애 · 재물 · 건강 · 직업</span>
+                </div>
+            </button>
+            <button class="landing-btn daily" onclick="goLanding('daily')">
+                <span class="lb-icon">🃏</span>
+                <div class="lb-body">
+                    <span class="lb-text" data-i18n="landing_daily">오늘의 카드 한 장</span>
+                    <span class="lb-sub" data-i18n="landing_daily_free">✦ 매일 무료 ✦</span>
+                </div>
+            </button>
+            <button class="landing-btn saju" onclick="goLanding('saju')">
+                <span class="lb-icon">☯</span>
+                <div class="lb-body">
+                    <span class="lb-text" data-i18n="landing_saju">동양 사주팔자</span>
+                    <span class="lb-sub" data-i18n="landing_saju_sub">사주 · 오행 · 운세 분석</span>
+                </div>
+            </button>
+            <button class="landing-btn zodiac" onclick="goLanding('zodiac')">
+                <span class="lb-icon">⭐</span>
+                <div class="lb-body">
+                    <span class="lb-text" data-i18n="landing_zodiac">별자리 운세</span>
+                    <span class="lb-sub" data-i18n="landing_zodiac_sub">12별자리 오늘의 운세</span>
+                </div>
+            </button>
+            <button class="landing-btn lotto" onclick="goLanding('lotto')">
+                <span class="lb-icon">🎱</span>
+                <div class="lb-body">
+                    <span class="lb-text" data-i18n="landing_lotto">로또번호 운세</span>
+                    <span class="lb-sub" data-i18n="landing_lotto_sub">타로 카드로 뽑는 행운의 번호</span>
+                </div>
+            </button>
+            <button class="landing-btn browse" onclick="goLanding('gallery')">
+                <span class="lb-icon">📖</span>
+                <div class="lb-body">
+                    <span class="lb-text" data-i18n="landing_gallery">타로 카드 도감</span>
+                    <span class="lb-sub" data-i18n="landing_gallery_sub">78장 메이저 + 마이너 아르카나</span>
+                </div>
+            </button>
+        </div>
+
+        <div class="landing-features">
+            <div class="feature-item">
+                <span>🧠</span>
+                <p data-i18n="landing_f1">MBTI 성격 맞춤 해석</p>
+            </div>
+            <div class="feature-item">
+                <span>⭐</span>
+                <p data-i18n="landing_f2">12별자리 연계 분석</p>
+            </div>
+            <div class="feature-item">
+                <span>🌏</span>
+                <p data-i18n="landing_f3">7개국 언어 지원</p>
+            </div>
+        </div>
+
+        <!-- 광고 슬롯 -->
+        <div class="ad-slot" id="ad-landing"><div class="ad-placeholder">AD</div></div>
+        <p class="cache-notice" data-i18n="cache_notice">⚠ 개인정보 및 포인트 정보는 브라우저 캐시에 저장되며,<br>캐시가 삭제되면 모든 데이터가 사라집니다.</p>
+        <div class="footer-contact">
+            <p data-i18n="footer_ad_inquiry">광고 및 제휴 문의</p>
+            <span class="footer-email">wo2021@gmail.com</span>
+        </div>
+        <p class="version-info">v1.0</p>
+    </div>
+</div>
+
+<!-- ======== 최초 접속 안내 팝업 ======== -->
+<div id="welcome-modal" class="modal" onclick="closeModal('welcome-modal',event)">
+    <div class="modal-box welcome-box">
+        <div class="welcome-icon">✦</div>
+        <h3 class="modal-title" data-i18n="welcome_title">Mystical Orion에 오신 것을 환영합니다</h3>
+        <div class="welcome-content">
+            <div class="welcome-notice">
+                <span class="welcome-notice-icon">🔒</span>
+                <p data-i18n="welcome_privacy">개인정보 안내: 입력하신 생년월일과 MBTI 정보는 <strong>오직 브라우저 캐시(localStorage)</strong>에만 저장됩니다. 외부 서버로 전송되지 않으며, 브라우저 캐시를 삭제하면 모든 정보가 완전히 사라집니다.</p>
+            </div>
+            <div class="welcome-notice">
+                <span class="welcome-notice-icon">📝</span>
+                <p data-i18n="welcome_required">정확한 운세 서비스를 위해 <strong>생년월일</strong>과 <strong>MBTI</strong> 정보를 반드시 입력해주세요. 정보 미입력 시 일부 기능이 제한됩니다.</p>
+            </div>
+        </div>
+        <button class="btn btn-gold" onclick="closeModal('welcome-modal');openSetupModal();" data-i18n="welcome_start">정보 입력하고 시작하기</button>
+        <p class="welcome-skip" onclick="closeModal('welcome-modal')" data-i18n="welcome_skip">나중에 입력할게요</p>
+    </div>
+</div>
+
+<!-- ======== 개인정보 입력 팝업 ======== -->
+<div id="setup-modal" class="modal" onclick="closeModal('setup-modal',event)">
+    <div class="modal-box setup-box">
+        <button class="modal-close" onclick="closeModal('setup-modal')">✕</button>
+        <h3 class="modal-title" data-i18n="setup_title">✦ 당신에 대해 알려주세요 ✦</h3>
+        <p class="modal-desc" data-i18n="setup_desc">정확한 정보가 정확한 점괘를 만듭니다</p>
+
+        <!-- MBTI 입력 탭 -->
+        <div class="tabs">
+            <button class="tab active" onclick="switchSetupTab('direct',this)" data-i18n="setup_mbti_direct">직접 입력</button>
+            <button class="tab" onclick="switchSetupTab('test',this)" data-i18n="setup_mbti_test">검사하기</button>
+        </div>
+
+        <div id="mbti-direct-tab" class="tab-body active">
+            <div class="mbti-grid">
+                <div class="mbti-row">
+                    <span class="axis-lbl" data-i18n="mbti_energy">에너지</span>
+                    <button class="ax selected" onclick="selectAxis(this,'E')" data-i18n="mbti_e">E 외향</button>
+                    <button class="ax" onclick="selectAxis(this,'I')" data-i18n="mbti_i">I 내향</button>
+                </div>
+                <div class="mbti-row">
+                    <span class="axis-lbl" data-i18n="mbti_perception">인식</span>
+                    <button class="ax selected" onclick="selectAxis(this,'S')" data-i18n="mbti_s">S 감각</button>
+                    <button class="ax" onclick="selectAxis(this,'N')" data-i18n="mbti_n">N 직관</button>
+                </div>
+                <div class="mbti-row">
+                    <span class="axis-lbl" data-i18n="mbti_judgment">판단</span>
+                    <button class="ax selected" onclick="selectAxis(this,'T')" data-i18n="mbti_t">T 사고</button>
+                    <button class="ax" onclick="selectAxis(this,'F')" data-i18n="mbti_f">F 감정</button>
+                </div>
+                <div class="mbti-row">
+                    <span class="axis-lbl" data-i18n="mbti_lifestyle">생활</span>
+                    <button class="ax selected" onclick="selectAxis(this,'J')" data-i18n="mbti_j">J 계획</button>
+                    <button class="ax" onclick="selectAxis(this,'P')" data-i18n="mbti_p">P 유연</button>
+                </div>
+            </div>
+            <div class="mbti-preview" id="mbti-preview">ESTJ</div>
+        </div>
+
+        <div id="mbti-test-tab" class="tab-body">
+            <button class="btn btn-purple" onclick="startMBTITest()" data-i18n="mbti_test_title">MBTI 검사 시작</button>
+        </div>
+
+        <!-- 생년월일 -->
+        <div class="field">
+            <label data-i18n="setup_birth">생년월일</label>
+            <span class="field-hint" data-i18n="solar_hint">☀ 양력 기준</span>
+            <input type="date" id="setup-birth" min="1920-01-01" max="2025-12-31">
+        </div>
+
+        <!-- 태어난 시 -->
+        <div class="field" id="birth-hour-group">
+            <label data-i18n="setup_birth_hour">태어난 시</label>
+            <select id="setup-birth-hour" data-i18n-hours="true">
+                <option value="" disabled selected data-i18n="select_placeholder">선택하세요</option>
+                <option value="0">자시 (23:00~01:00)</option>
+                <option value="1">축시 (01:00~03:00)</option>
+                <option value="3">인시 (03:00~05:00)</option>
+                <option value="5">묘시 (05:00~07:00)</option>
+                <option value="7">진시 (07:00~09:00)</option>
+                <option value="9">사시 (09:00~11:00)</option>
+                <option value="11">오시 (11:00~13:00)</option>
+                <option value="13">미시 (13:00~15:00)</option>
+                <option value="15">신시 (15:00~17:00)</option>
+                <option value="17">유시 (17:00~19:00)</option>
+                <option value="19">술시 (19:00~21:00)</option>
+                <option value="21">해시 (21:00~23:00)</option>
+                <option value="12" data-i18n="hour_unknown">모름</option>
+            </select>
+        </div>
+
+        <!-- 성별 -->
+        <div class="field">
+            <label data-i18n="setup_gender">성별</label>
+            <div class="gender-options">
+                <div class="gender-option">
+                    <input type="radio" name="setup-gender" id="setup-male" value="male">
+                    <label for="setup-male" data-i18n="setup_gender_m">♂ 남성</label>
+                </div>
+                <div class="gender-option">
+                    <input type="radio" name="setup-gender" id="setup-female" value="female">
+                    <label for="setup-female" data-i18n="setup_gender_f">♀ 여성</label>
+                </div>
+            </div>
+        </div>
+
+        <div id="zodiac-preview" class="zodiac-prev" style="display:none">
+            <span id="zodiac-symbol"></span> <span id="zodiac-name"></span>
+        </div>
+
+        <button class="btn btn-gold" onclick="saveSetup()" data-i18n="setup_save">저장하기</button>
+        <p class="note" data-i18n="setup_saved_notice">정보는 브라우저에만 저장됩니다</p>
+    </div>
+</div>
+
+<!-- ======== MBTI 검사 화면 ======== -->
+<div id="mbti-test-screen" class="screen">
+    <div class="container">
+        <div class="progress"><div class="progress-bar" id="test-progress-bar"></div></div>
+        <p class="counter" id="test-counter">1 / 12</p>
+        <div class="question" id="test-question-text"></div>
+        <div id="test-options"></div>
+    </div>
+</div>
+
+<!-- ======== MBTI 검사 결과 ======== -->
+<div id="mbti-result-screen" class="screen">
+    <div class="container center">
+        <h2 data-i18n="mbti_test_result">검사 결과</h2>
+        <div class="result-badge">
+            <span id="mbti-result-emoji" class="big-emoji"></span>
+            <span id="mbti-result-type" class="big-type"></span>
+            <span id="mbti-result-name" class="type-name"></span>
+        </div>
+        <div id="mbti-result-bars"></div>
+        <div id="mbti-result-desc" class="desc-box"></div>
+        <div class="btn-row">
+            <button class="btn btn-gold" onclick="useMBTIResult()" data-i18n="mbti_test_use">이 결과 사용</button>
+            <button class="btn" onclick="startMBTITest()" data-i18n="mbti_test_retry">다시 검사</button>
+        </div>
+    </div>
+</div>
+
+<!-- ======== 홈 화면 ======== -->
+<div id="home-screen" class="screen">
+    <div class="container">
+        <div class="home-head">
+            <span id="home-greeting" class="greeting"></span>
+            <span id="home-mbti-badge" class="badge"></span>
+        </div>
+
+        <!-- 오늘의 카드 -->
+        <div class="daily-card" onclick="flipDailyCard()">
+            <h3 data-i18n="home_daily_card">✦ 오늘의 카드 ✦</h3>
+            <div class="card-flip" id="daily-card-inner">
+                <div class="card-front">
+                    <div class="card-pattern"></div>
+                    <div class="card-corner-tl">☽</div>
+                    <div class="card-corner-br">☾</div>
+                    <span class="card-center-symbol">✦</span>
+                    <span class="card-subtitle" data-i18n="home_daily_free">터치하여 카드 뒤집기</span>
+                </div>
+                <div class="card-back" id="daily-card-back"></div>
+            </div>
+        </div>
+        <!-- 오늘의 카드 전문가 해석 -->
+        <div id="daily-expert-reading" class="daily-expert-reading" style="display:none"></div>
+
+        <!-- 광고 슬롯 -->
+        <div class="ad-slot" id="ad-home-top"><div class="ad-placeholder">AD</div></div>
+
+        <!-- 빠른 메뉴 -->
+        <div class="quick-grid">
+            <button class="qitem" onclick="goToReading('love')">💕<span data-i18n="topic_love">연애</span></button>
+            <button class="qitem" onclick="goToReading('money')">💰<span data-i18n="topic_money">재물</span></button>
+            <button class="qitem" onclick="goToReading('health')">💪<span data-i18n="topic_health">건강</span></button>
+            <button class="qitem" onclick="goToReading('general')">🔮<span data-i18n="topic_general">종합</span></button>
+            <button class="qitem" onclick="goToReading('compatibility')">💑<span data-i18n="special_compatibility">궁합</span></button>
+            <button class="qitem" onclick="goToReading('question')">❓<span data-i18n="cat_question">질문</span></button>
+            <button class="qitem saju-qitem" onclick="goToReading('saju')">☯<span data-i18n="analysis_saju">사주팔자</span></button>
+        </div>
+
+        <button class="btn full" onclick="showScreen('category-screen')" data-i18n="home_all_menu">전체 메뉴 보기</button>
+
+        <div class="ad-slot" id="ad-home-bottom"><div class="ad-placeholder">AD</div></div>
+    </div>
+</div>
+
+<!-- ======== 카테고리 화면 ======== -->
+<div id="category-screen" class="screen">
+    <div class="container">
+        <div class="hdr"><button class="back" onclick="showScreen('home-screen')">←</button><h2 data-i18n="nav_reading">운세 보기</h2></div>
+        <div id="category-user-summary" class="user-sum"></div>
+
+        <h3 class="sec" data-i18n="cat_period">✦ 기간별</h3>
+        <div class="cat-grid">
+            <button class="cat" onclick="goToReading('today')">☀️<span data-i18n="period_today">오늘</span></button>
+            <button class="cat" onclick="goToReading('tomorrow')">🌙<span data-i18n="period_tomorrow">내일</span></button>
+            <button class="cat" onclick="goToReading('week')">📅<span data-i18n="period_week">이번 주</span></button>
+            <button class="cat" onclick="goToReading('month')">🗓️<span data-i18n="period_month">이번 달</span></button>
+            <button class="cat" onclick="goToReading('year')">🎆<span data-i18n="period_year">올해</span></button>
+            <button class="cat" onclick="goToReading('custom')">📌<span data-i18n="period_custom">날짜 지정</span></button>
+        </div>
+
+        <h3 class="sec" data-i18n="cat_topic">✦ 주제별</h3>
+        <div class="cat-grid">
+            <button class="cat" onclick="goToReading('general')">🔮<span data-i18n="topic_general">종합</span></button>
+            <button class="cat" onclick="goToReading('money')">💰<span data-i18n="topic_money">재물</span></button>
+            <button class="cat" onclick="goToReading('love')">💕<span data-i18n="topic_love">연애</span></button>
+            <button class="cat" onclick="goToReading('health')">💪<span data-i18n="topic_health">건강</span></button>
+            <button class="cat" onclick="goToReading('study')">📚<span data-i18n="topic_study">학업</span></button>
+            <button class="cat" onclick="goToReading('career')">💼<span data-i18n="topic_career">직업</span></button>
+            <button class="cat" onclick="goToReading('social')">🤝<span data-i18n="topic_social">대인</span></button>
+            <button class="cat" onclick="goToReading('marriage')">💍<span data-i18n="topic_marriage">결혼</span></button>
+        </div>
+
+        <h3 class="sec" data-i18n="cat_special">✦ 특별</h3>
+        <div class="cat-grid">
+            <button class="cat" onclick="goToReading('compatibility')">💑<span data-i18n="special_compatibility">궁합</span></button>
+            <button class="cat" onclick="goToReading('datepick')">📅<span data-i18n="special_datepick">택일</span></button>
+            <button class="cat" onclick="goToReading('lotto')">🎱<span data-i18n="special_lotto">행운번호</span></button>
+            <button class="cat" onclick="goToReading('question')">❓<span data-i18n="cat_question">질문</span></button>
+        </div>
+
+        <div id="saju-section" class="saju-sec">
+            <h3 class="sec" data-i18n="analysis_saju">✦ 사주 분석</h3>
+            <div class="cat-grid">
+                <button class="cat wide" onclick="goToReading('saju')">📊<span data-i18n="analysis_saju">내 사주팔자</span></button>
+            </div>
+        </div>
+
+        <div class="ad-slot" id="ad-category"><div class="ad-placeholder">AD</div></div>
+    </div>
+</div>
+
+<!-- ======== 통합 리딩 화면 (질문 + 스프레드 선택) ======== -->
+<div id="reading-setup-screen" class="screen">
+    <div class="container">
+        <div class="hdr">
+            <button class="back" onclick="showScreen('home-screen')">←</button>
+            <h2 id="reading-setup-title">✦ 타로 점사 ✦</h2>
+            <span class="hdr-points" id="reading-points-badge">50P</span>
+        </div>
+
+        <!-- 주제 표시 -->
+        <div class="reading-topic-badge" id="reading-topic-display"></div>
+
+        <!-- 질문 입력 -->
+        <div class="field">
+            <label data-i18n="question_label">카드에게 물어보세요</label>
+            <textarea id="question-input" rows="3" maxlength="200"
+                data-i18n-placeholder="question_placeholder_full" placeholder="예: 이번 달 재물운은 어떨까?"></textarea>
+            <div class="char-count"><span id="q-char-count">0</span>/200</div>
+        </div>
+        <div class="chips" id="example-chips"></div>
+
+        <!-- 스프레드 선택 -->
+        <h3 class="sec" data-i18n="spread_select">✦ 스프레드 선택</h3>
+        <div class="spread-selector">
+            <button class="spread-option" id="spread-1" onclick="selectSpread(1)">
+                <div class="spread-cards-preview">🃏</div>
+                <div class="spread-name" data-i18n="spread_1_name">1장 뽑기</div>
+                <div class="spread-desc" data-i18n="spread_1_desc">핵심 메시지 · 빠른 답변</div>
+            </button>
+            <button class="spread-option active" id="spread-3" onclick="selectSpread(3)">
+                <div class="spread-cards-preview">🃏🃏🃏</div>
+                <div class="spread-name" data-i18n="spread_3_name">3장 뽑기</div>
+                <div class="spread-desc" data-i18n="spread_3_desc">과거 · 현재 · 미래</div>
+            </button>
+        </div>
+
+        <!-- 포인트 안내 -->
+        <div class="point-cost-info" id="point-cost-info">
+            <span data-i18n="reading_cost">✦ 1회 점사 비용:</span> <strong>50P</strong>
+            <span id="point-balance-display">0P</span>
+        </div>
+
+        <!-- 광고 보고 포인트 충전 -->
+        <div class="ad-reward-banner" onclick="watchAdForPoints()">
+            <span>📺</span>
+            <span data-i18n="ad_watch">광고 보고 <strong>+30P</strong> 받기</span>
+        </div>
+
+        <button class="btn btn-gold" onclick="startReading()" id="start-reading-btn">
+            <span data-i18n="btn_shuffle">🔮 카드 섞기 ✦</span> <span class="btn-cost">(-50P)</span>
+        </button>
+        <button class="btn" onclick="showScreen('home-screen')" data-i18n="btn_go_back">← 돌아가기</button>
+    </div>
+</div>
+
+<!-- ======== 궁합 입력 ======== -->
+<div id="compatibility-screen" class="screen">
+    <div class="container">
+        <div class="hdr"><button class="back" onclick="showScreen('category-screen')">←</button><h2 data-i18n="special_compatibility">MBTI 궁합</h2></div>
+
+        <!-- 내 정보 섹션 -->
+        <div class="compat-box my-box">
+            <div class="compat-box-label" data-i18n="my_info">💜 나의 정보</div>
+            <div id="compat-my-info" class="compat-my-detail"></div>
+        </div>
+
+        <!-- 상대방 정보 섹션 -->
+        <div class="compat-box partner-box">
+            <div class="compat-box-label" data-i18n="partner_info">💛 상대방 정보</div>
+            <div class="mbti-grid compact">
+                <div class="mbti-row">
+                    <span class="axis-lbl" data-i18n="mbti_energy">에너지</span>
+                    <button class="ax selected" onclick="selectPartnerAxis(this,'E')" data-i18n="mbti_e">E 외향</button>
+                    <button class="ax" onclick="selectPartnerAxis(this,'I')" data-i18n="mbti_i">I 내향</button>
+                </div>
+                <div class="mbti-row">
+                    <span class="axis-lbl" data-i18n="mbti_perception">인식</span>
+                    <button class="ax selected" onclick="selectPartnerAxis(this,'S')" data-i18n="mbti_s">S 감각</button>
+                    <button class="ax" onclick="selectPartnerAxis(this,'N')" data-i18n="mbti_n">N 직관</button>
+                </div>
+                <div class="mbti-row">
+                    <span class="axis-lbl" data-i18n="mbti_judgment">판단</span>
+                    <button class="ax selected" onclick="selectPartnerAxis(this,'T')" data-i18n="mbti_t">T 사고</button>
+                    <button class="ax" onclick="selectPartnerAxis(this,'F')" data-i18n="mbti_f">F 감정</button>
+                </div>
+                <div class="mbti-row">
+                    <span class="axis-lbl" data-i18n="mbti_lifestyle">생활</span>
+                    <button class="ax selected" onclick="selectPartnerAxis(this,'J')" data-i18n="mbti_j">J 계획</button>
+                    <button class="ax" onclick="selectPartnerAxis(this,'P')" data-i18n="mbti_p">P 유연</button>
+                </div>
+            </div>
+            <div class="mbti-preview" id="partner-mbti-preview">ESTJ</div>
+            <div class="field">
+                <label data-i18n="compat_partner_birth">상대 생년월일 (선택)</label>
+                <span class="field-hint" data-i18n="solar_hint">☀ 양력 기준</span>
+                <input type="date" id="partner-birth" min="1920-01-01" max="2025-12-31">
+            </div>
+        </div>
+
+        <button class="btn btn-gold" onclick="startCardPick('compatibility')" data-i18n="compat_go">궁합 보기 ✦</button>
+    </div>
+</div>
+
+<!-- ======== 택일 (길일 추천) ======== -->
+<div id="datepick-screen" class="screen">
+    <div class="container">
+        <div class="hdr"><button class="back" onclick="showScreen('category-screen')">←</button><h2 data-i18n="datepick_title">길일 택일</h2></div>
+        <p class="section-desc" data-i18n="datepick_desc">기간 내 가장 좋은 날 3일을 찾아드립니다</p>
+        <div class="field"><label data-i18n="datepick_dateA">시작일</label><input type="date" id="datepick-a"></div>
+        <div class="field"><label data-i18n="datepick_dateB">종료일</label><input type="date" id="datepick-b"></div>
+        <button class="btn btn-gold" onclick="analyzeDatepick()" data-i18n="datepick_go">길일 찾기 ✦</button>
+    </div>
+</div>
+
+<!-- ======== 택일 결과 ======== -->
+<div id="datepick-result-screen" class="screen">
+    <div class="reading-container">
+        <div id="datepick-result-content"></div>
+        <div class="ad-slot"><div class="ad-placeholder">AD</div></div>
+        <div class="btn-group">
+            <button class="btn-primary" onclick="showScreen('datepick-screen')" data-i18n="retry_reading">🔮 다시 점치기</button>
+            <button class="btn-secondary" onclick="showScreen('category-screen')" data-i18n="back_menu">← 운세 메뉴</button>
+            <button class="btn-secondary" onclick="showScreen('landing-screen')" data-i18n="back_home">🏠 홈으로</button>
+        </div>
+    </div>
+</div>
+
+<div id="custom-date-screen" class="screen">
+    <div class="container">
+        <div class="hdr"><button class="back" onclick="showScreen('category-screen')">←</button><h2 data-i18n="period_custom">날짜 지정</h2></div>
+        <div class="field"><label data-i18n="datepick_dateA">날짜</label><input type="date" id="custom-date-input"></div>
+        <button class="btn btn-gold" onclick="startCardPick('custom')" data-i18n="btn_card_pick">카드 뽑기 ✦</button>
+    </div>
+</div>
+
+<!-- ======== 셔플 ======== -->
+<div id="shuffle-screen" class="screen">
+    <div class="loading-content">
+        <div class="shuffle-visual">
+            <div class="shuffle-cards" id="shuffle-cards"></div>
+        </div>
+        <p class="loading-text" id="shuffle-text" data-i18n="shuffle_title">카드를 섞고 있습니다...</p>
+        <div class="loading-dots"><span></span><span></span><span></span></div>
+    </div>
+</div>
+
+<!-- ======== 카드 뽑기 ======== -->
+<div id="pick-screen" class="screen">
+    <div class="pick-container">
+        <div class="pick-header">
+            <div class="pick-round-indicator" id="pick-round-indicator"></div>
+            <h2 id="pick-title" data-i18n="pick_title">카드를 선택하세요</h2>
+            <p class="pick-subtitle" id="pick-subtitle"></p>
+        </div>
+        <div id="pick-grid" class="pick-grid"></div>
+    </div>
+</div>
+
+<!-- ======== 결과 화면 ======== -->
+<div id="result-screen" class="screen">
+    <div class="reading-container">
+        <div id="result-content"></div>
+        <!-- 광고 슬롯 -->
+        <div class="ad-slot" id="ad-result">
+            <div class="ad-placeholder">AD</div>
+        </div>
+        <div class="btn-group">
+            <button class="btn-primary" onclick="goToReading(window.currentReadingType)" data-i18n="retry_reading">
+                🔮 다시 점치기
+            </button>
+            <button class="btn-outline" onclick="shareResult()" data-i18n="share_result">
+                📤 공유하기
+            </button>
+            <button class="btn-secondary" onclick="showScreen('category-screen')" data-i18n="back_menu">← 운세 메뉴</button>
+            <button class="btn-secondary" onclick="showScreen('landing-screen')" data-i18n="back_home">🏠 홈으로</button>
+        </div>
+    </div>
+</div>
+
+<!-- ======== 로또 결과 ======== -->
+<div id="lotto-result-screen" class="screen">
+    <div class="container center">
+        <div class="hdr"><button class="back" onclick="showScreen('category-screen')">←</button><h2 data-i18n="special_lotto">행운의 번호</h2></div>
+        <div id="lotto-cards" class="result-cards"></div>
+        <div id="lotto-numbers" class="lotto-nums"></div>
+        <p class="note" data-i18n="lotto_disclaimer">재미로만 참고하세요!</p>
+        <div class="btn-row">
+            <button class="btn" onclick="copyLottoNumbers()" data-i18n="btn_copy">복사</button>
+            <button class="btn" onclick="goToReading('lotto')" data-i18n="result_retry">다시</button>
+        </div>
+        <div id="lotto-extra-sections"></div>
+        <div class="ad-slot" id="ad-lotto"><div class="ad-placeholder">AD</div></div>
+    </div>
+</div>
+
+<!-- ======== 사주 ======== -->
+<div id="saju-screen" class="screen">
+    <div class="container">
+        <div class="hdr"><button class="back" onclick="showScreen('category-screen')">←</button><h2 data-i18n="analysis_saju">사주 분석</h2></div>
+        <div id="saju-content"></div>
+    </div>
+</div>
+
+<!-- ======== 별자리 운세 ======== -->
+<div id="zodiac-screen" class="screen">
+    <div class="container">
+        <div class="hdr"><button class="back" onclick="showScreen('landing-screen')">←</button><h2 data-i18n="zodiac_title">별자리 운세</h2></div>
+        <!-- User's zodiac info bar -->
+        <div id="zodiac-user-info" class="zodiac-user-info"></div>
+        <!-- 12 zodiac sign grid for selection -->
+        <div class="zodiac-grid" id="zodiac-grid"></div>
+        <!-- Zodiac reading result area (hidden initially) -->
+        <div id="zodiac-result" class="zodiac-result" style="display:none"></div>
+        <!-- Ad slot -->
+        <div class="ad-slot"><div class="ad-placeholder">AD</div></div>
+        <button class="btn-secondary" onclick="showScreen('landing-screen')" data-i18n="back_home" style="margin-top:16px;width:100%">🏠 홈으로</button>
+    </div>
+</div>
+
+<!-- ======== 도감 ======== -->
+<div id="gallery-screen" class="screen">
+    <div class="container">
+        <div class="hdr"><button class="back" onclick="showScreen('home-screen')">←</button><h2 data-i18n="gallery_title">타로 카드 도감</h2></div>
+        <input type="text" class="search" id="gallery-search" data-i18n-placeholder="gallery_search" placeholder="카드 검색...">
+        <div class="filter-row">
+            <button class="fil active" onclick="filterGallery('all',this)" data-i18n="gallery_all">전체</button>
+            <button class="fil" onclick="filterGallery('major',this)" data-i18n="gallery_major">메이저</button>
+            <button class="fil" onclick="filterGallery('wands',this)" data-i18n="gallery_wands">완드</button>
+            <button class="fil" onclick="filterGallery('cups',this)" data-i18n="gallery_cups">컵</button>
+            <button class="fil" onclick="filterGallery('swords',this)" data-i18n="gallery_swords">소드</button>
+            <button class="fil" onclick="filterGallery('pentacles',this)" data-i18n="gallery_pentacles">펜타클</button>
+        </div>
+        <div class="gallery-grid" id="gallery-grid"></div>
+    </div>
+</div>
+
+<!-- ======== 카드 상세 모달 ======== -->
+<div id="card-detail-modal" class="modal" onclick="closeModal('card-detail-modal',event)">
+    <div class="modal-box">
+        <button class="modal-close" onclick="closeModal('card-detail-modal')">✕</button>
+        <div id="card-detail-content"></div>
+    </div>
+</div>
+
+<!-- ======== 포인트 안내 모달 ======== -->
+<div id="points-modal" class="modal" onclick="closeModal('points-modal',event)">
+    <div class="modal-box">
+        <button class="modal-close" onclick="closeModal('points-modal')">✕</button>
+        <h3 data-i18n="points_guide">✦ 포인트 안내 ✦</h3>
+        <div class="modal-desc" data-i18n="points_guide_desc">카드 점사에 필요한 포인트를 모아보세요</div>
+        <div class="points-info-list">
+            <div class="pi-item pi-earn"><span data-i18n="pi_checkin">📅 출석 체크</span><span>+100P</span></div>
+            <div class="pi-item pi-earn"><span data-i18n="pi_ad">📺 광고 시청</span><span>+30P</span></div>
+            <div class="pi-item pi-earn"><span data-i18n="pi_bonus">🎁 첫 가입 보너스</span><span>+200P</span></div>
+            <div class="pi-divider"></div>
+            <div class="pi-item pi-spend"><span data-i18n="pi_reading">🔮 타로 점사 1회</span><span>-50P</span></div>
+        </div>
+        <div style="margin-top:16px;text-align:center">
+            <div style="font-size:2rem;font-weight:900;color:var(--gold);font-family:var(--font-serif)" id="modal-points-display">0P</div>
+            <div style="font-size:0.8rem;color:var(--text-dim);margin-top:4px" data-i18n="points_current">현재 보유 포인트</div>
+        </div>
+        <button class="btn btn-gold" onclick="doDailyCheckin()" id="checkin-btn" data-i18n="checkin_btn">📅 출석 체크 (+100P)</button>
+        <button class="btn" onclick="closeModal('points-modal')" data-i18n="btn_close">닫기</button>
+    </div>
+</div>
+
+<!-- ======== 내 정보 ======== -->
+<div id="profile-screen" class="screen">
+    <div class="container">
+        <div class="hdr"><button class="back" onclick="showScreen('home-screen')">←</button><h2 data-i18n="profile_title">내 정보</h2></div>
+        <div id="profile-card" class="info-card"></div>
+        <div class="menu-list">
+            <button class="menu-item" onclick="openSetupModal()"><span data-i18n="profile_change_mbti">MBTI 변경</span> ›</button>
+            <button class="menu-item" onclick="openSetupModal()"><span data-i18n="profile_change_birth">생년월일 변경</span> ›</button>
+            <button class="menu-item menu-item-danger" onclick="confirmResetData()"><span data-i18n="profile_reset">🗑 개인정보 삭제 / 초기화</span></button>
+        </div>
+        <h3 class="sec" data-i18n="profile_history">✦ 점괘 기록</h3>
+        <div id="history-list"></div>
+        <h3 class="sec" data-i18n="profile_language">✦ 언어 설정</h3>
+        <div class="lang-grid">
+            <button onclick="switchLang('ko')">🇰🇷 한국어</button>
+            <button onclick="switchLang('en')">🇺🇸 EN</button>
+            <button onclick="switchLang('ja')">🇯🇵 日本語</button>
+            <button onclick="switchLang('es')">🇪🇸 ES</button>
+            <button onclick="switchLang('pt')">🇧🇷 PT</button>
+            <button onclick="switchLang('fr')">🇫🇷 FR</button>
+            <button onclick="switchLang('de')">🇩🇪 DE</button>
+        </div>
+    </div>
+</div>
+
+<!-- 상단 네비게이션 (언어바 아래) -->
+<nav id="top-nav" class="topnav" style="display:none">
+    <button class="nav active" onclick="navigateTo('landing-screen',this)"><span>🏠</span><small data-i18n="nav_home">홈</small></button>
+    <button class="nav" onclick="navigateTo('category-screen',this)"><span>🔮</span><small data-i18n="nav_reading">운세</small></button>
+    <button class="nav" onclick="navigateTo('gallery-screen',this)"><span>🃏</span><small data-i18n="nav_gallery">도감</small></button>
+    <button class="nav" onclick="navigateTo('profile-screen',this)"><span>👤</span><small data-i18n="nav_profile">정보</small></button>
+</nav>
+
+<div id="toast" class="toast"></div>
+
+<!-- Scripts (순서 중요) -->
+<script src="js/i18n.js"></script>
+<script src="js/translations.js"></script>
+<script src="js/translations-compat.js"></script>
+<script src="js/translations-saju.js"></script>
+<script src="js/translations-reading.js"></script>
+<script src="js/translations-zodiac.js"></script>
+<script src="js/zodiac.js"></script>
+<script src="js/tarot.js"></script>
+<script src="js/mbti.js"></script>
+<script src="js/solar-terms.js"></script>
+<script src="js/saju.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>

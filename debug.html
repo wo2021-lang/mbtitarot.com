@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>Debug</title></head>
+<body>
+<h1>JS 로딩 테스트</h1>
+<pre id="log"></pre>
+<script>
+var log = document.getElementById('log');
+function addLog(msg) {
+  log.textContent += msg + '\n';
+  console.log(msg);
+}
+window.onerror = function(msg, url, line, col, err) {
+  addLog('ERROR: ' + msg + ' at ' + url + ':' + line + ':' + col);
+  return false;
+};
+</script>
+<script>addLog('1. Start loading scripts...');</script>
+<script src="js/i18n.js"></script>
+<script>addLog('2. i18n.js loaded OK. window.t=' + typeof window.t);</script>
+<script src="js/zodiac.js"></script>
+<script>addLog('3. zodiac.js loaded OK. window.ZODIAC=' + typeof window.ZODIAC);</script>
+<script src="js/tarot.js"></script>
+<script>addLog('4. tarot.js loaded OK. window.TAROT=' + typeof window.TAROT);</script>
+<script src="js/mbti.js"></script>
+<script>addLog('5. mbti.js loaded OK. window.MBTI=' + typeof window.MBTI);</script>
+<script src="js/solar-terms.js"></script>
+<script>addLog('6. solar-terms.js loaded OK. window.getJDN=' + typeof window.getJDN);</script>
+<script src="js/saju.js"></script>
+<script>addLog('7. saju.js loaded OK. window.calculateSaju=' + typeof window.calculateSaju);</script>
+<script src="js/app.js"></script>
+<script>addLog('8. app.js loaded OK. window.showScreen=' + typeof window.showScreen);</script>
+<script>addLog('DONE - All scripts loaded successfully!');</script>
+</body>
+</html>
