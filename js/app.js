@@ -308,6 +308,14 @@
         el.style.display = 'none';
       }
     });
+    // iframe 클릭 감지 (blur 방식)
+    window.addEventListener('blur', function() {
+      var ae = document.activeElement;
+      if (ae && ae.tagName === 'IFRAME' && ae.src && ae.src.indexOf('coupang') !== -1) {
+        onCoupangAdClick();
+        setTimeout(function() { window.focus(); }, 100);
+      }
+    });
   }
   window.onCoupangAdClick = onCoupangAdClick;
 
