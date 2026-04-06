@@ -1772,9 +1772,13 @@ body {
     text-align: center; font-size: 0.7rem;
     color: var(--text-dim); padding: 12px;
 }
+.coupang-ko-only {
+    flex-direction: column;
+}
 .coupang-notice {
     text-align: center; font-size: 0.8rem;
     color: #ffd700; padding: 6px 0 2px; margin: 0;
+    width: 100%;
 }
 .coupang-notice strong { color: #ff6b6b; }
 .coupang-cooldown { color: var(--text-dim); font-size: 0.75rem; }
