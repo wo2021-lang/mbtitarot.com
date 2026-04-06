@@ -645,7 +645,11 @@
       updateMBTIPreview();
     }
     var birth = localStorage.getItem('mystical_birth');
-    if (birth) { var el = document.getElementById('setup-birth'); if (el) el.value = birth; }
+    if (birth) {
+      var el = document.getElementById('setup-birth');
+      if (el) el.value = birth;
+      updateZodiacPreview();
+    }
   };
 
   window.switchSetupTab = function (tab, btn) {
