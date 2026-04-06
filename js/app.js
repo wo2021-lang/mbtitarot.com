@@ -301,7 +301,7 @@
 
   function loadCoupangAds() {
     var lang = window.getLang ? window.getLang() : 'en';
-    var slots = ['ad-landing', 'ad-home-top', 'ad-result'];
+    var slots = ['ad-landing', 'ad-home-top', 'ad-result', 'ad-main-lotto'];
     slots.forEach(function(id) {
       var el = document.getElementById(id);
       if (!el) return;
