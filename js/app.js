@@ -274,16 +274,27 @@
 
   /* ============ 쿠팡 파트너스 광고 (한국어만) ============ */
   var COUPANG_COOLDOWN = 2 * 60 * 60 * 1000; // 2시간
-  var COUPANG_POINTS = 30;
+  var COUPANG_POINTS = 50;
+  var COUPANG_MAX_CLICKS = 3; // 2시간마다 3번
+
+  function getCoupangClickData() {
+    var data = JSON.parse(localStorage.getItem('coupang_clicks') || '{"count":0,"start":0}');
+    if (Date.now() - data.start >= COUPANG_COOLDOWN) {
+      data = { count: 0, start: Date.now() };
+      localStorage.setItem('coupang_clicks', JSON.stringify(data));
+    }
+    return data;
+  }
 
   function canEarnCoupangPoints() {
-    var last = parseInt(localStorage.getItem('coupang_last_earn') || '0', 10);
-    return Date.now() - last >= COUPANG_COOLDOWN;
+    var data = getCoupangClickData();
+    return data.count < COUPANG_MAX_CLICKS;
   }
 
   function getCoupangCooldownText() {
-    var last = parseInt(localStorage.getItem('coupang_last_earn') || '0', 10);
-    var diff = COUPANG_COOLDOWN - (Date.now() - last);
+    var data = getCoupangClickData();
+    if (data.count < COUPANG_MAX_CLICKS) return '';
+    var diff = COUPANG_COOLDOWN - (Date.now() - data.start);
     if (diff <= 0) return '';
     var h = Math.floor(diff / 3600000);
     var m = Math.floor((diff % 3600000) / 60000);
@@ -291,11 +302,17 @@
   }
 
   function onCoupangAdClick() {
-    if (canEarnCoupangPoints()) {
-      localStorage.setItem('coupang_last_earn', String(Date.now()));
+    var data = getCoupangClickData();
+    if (data.count < COUPANG_MAX_CLICKS) {
+      data.count++;
+      if (data.count === 1) data.start = Date.now();
+      localStorage.setItem('coupang_clicks', JSON.stringify(data));
       addPoints(COUPANG_POINTS);
       updatePointsDisplay();
-      showToast('+' + COUPANG_POINTS + 'P 적립!');
+      var remain = COUPANG_MAX_CLICKS - data.count;
+      showToast('+' + COUPANG_POINTS + 'P 적립! (남은 횟수: ' + remain + ')');
+    } else {
+      showToast('⏳ ' + getCoupangCooldownText());
     }
   }
 
@@ -323,7 +340,7 @@
   function initPoints() {
     // 첫 방문 보너스
     if (!localStorage.getItem('mystical_points') && !localStorage.getItem('mystical_uuid')) {
-      localStorage.setItem('mystical_points', '200');
+      localStorage.setItem('mystical_points', '500');
     }
     updatePointsDisplay();
     checkDailyCheckinAvailable();
