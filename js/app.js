@@ -299,6 +299,27 @@
     }
   }
 
+  var coupangScriptLoaded = false;
+
+  function loadCoupangScript(callback) {
+    if (coupangScriptLoaded) { callback(); return; }
+    if (window.PartnersCoupang) { coupangScriptLoaded = true; callback(); return; }
+    var sc = document.createElement('script');
+    sc.src = 'https://ads-partners.coupang.com/g.js';
+    sc.onload = function() { coupangScriptLoaded = true; callback(); };
+    document.head.appendChild(sc);
+  }
+
+  function renderCoupangAd(el) {
+    var adDiv = document.createElement('div');
+    adDiv.className = 'coupang-ad';
+    adDiv.onclick = onCoupangAdClick;
+    el.appendChild(adDiv);
+    try {
+      new PartnersCoupang.G({"id":978458,"template":"carousel","trackingCode":"AF1130043","width":"320","height":"100","tsource":"",subId:el.id});
+    } catch(e) { console.error('Coupang ad error:', e); }
+  }
+
   function loadCoupangAds() {
     var lang = window.getLang ? window.getLang() : 'en';
     var slots = ['ad-landing', 'ad-home-top', 'ad-result', 'ad-main-lotto'];
@@ -310,13 +331,8 @@
         var notice = canEarn
           ? '<p class="coupang-notice">🛒 쿠팡 광고 클릭 시 <strong>+' + COUPANG_POINTS + 'P</strong> 적립 (2시간마다)</p>'
           : '<p class="coupang-notice coupang-cooldown">⏳ ' + getCoupangCooldownText() + '</p>';
-        el.innerHTML = notice + '<div class="coupang-ad" onclick="onCoupangAdClick()"></div>';
-        var sc = document.createElement('script');
-        sc.src = 'https://ads-partners.coupang.com/g.js';
-        sc.onload = function() {
-          new PartnersCoupang.G({"id":978458,"template":"carousel","trackingCode":"AF1130043","width":"320","height":"100","tsource":""});
-        };
-        el.appendChild(sc);
+        el.innerHTML = notice;
+        loadCoupangScript(function() { renderCoupangAd(el); });
       } else {
         el.innerHTML = '<div class="ad-placeholder">AD</div>';
       }
