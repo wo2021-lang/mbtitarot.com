@@ -299,22 +299,13 @@
     }
   }
 
-  var COUPANG_IFRAME = '<iframe src="https://ads-partners.coupang.com/widgets.html?id=978458&template=carousel&trackingCode=AF1130043&subId=&width=320&height=100&tsource=" width="320" height="100" frameborder="0" scrolling="no" referrerpolicy="unsafe-url" browsingtopics style="max-width:100%;"></iframe>';
-
   function loadCoupangAds() {
     var lang = window.getLang ? window.getLang() : 'en';
-    var slots = ['ad-landing', 'ad-home-top', 'ad-result', 'ad-main-lotto'];
-    slots.forEach(function(id) {
-      var el = document.getElementById(id);
-      if (!el) return;
+    document.querySelectorAll('.coupang-ko-only').forEach(function(el) {
       if (lang === 'ko') {
-        var canEarn = canEarnCoupangPoints();
-        var notice = canEarn
-          ? '<p class="coupang-notice">🛒 쿠팡 광고 클릭 시 <strong>+' + COUPANG_POINTS + 'P</strong> 적립 (2시간마다)</p>'
-          : '<p class="coupang-notice coupang-cooldown">⏳ ' + getCoupangCooldownText() + '</p>';
-        el.innerHTML = notice + '<div class="coupang-ad" onclick="onCoupangAdClick()">' + COUPANG_IFRAME + '</div>';
+        el.style.display = '';
       } else {
-        el.innerHTML = '<div class="ad-placeholder">AD</div>';
+        el.style.display = 'none';
       }
     });
   }
