@@ -274,7 +274,7 @@
 
   /* ============ 쿠팡 파트너스 광고 (한국어만) ============ */
   var COUPANG_COOLDOWN = 2 * 60 * 60 * 1000; // 2시간
-  var COUPANG_POINTS = 20;
+  var COUPANG_POINTS = 30;
 
   function canEarnCoupangPoints() {
     var last = parseInt(localStorage.getItem('coupang_last_earn') || '0', 10);
@@ -380,7 +380,7 @@
       return;
     }
     localStorage.setItem('mystical_last_checkin', today);
-    addPoints(100);
+    addPoints(50);
     showToast(L('checkin_ok'));
     checkDailyCheckinAvailable();
   };
