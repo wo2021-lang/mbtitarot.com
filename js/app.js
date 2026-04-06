@@ -485,13 +485,19 @@
       parts[0] = parts[0].substring(0, 4);
       e.target.value = parts.join('-');
     }
-    var y = parseInt(parts[0]);
-    if (y < 1920 || y > 2025) {
-      e.target.setCustomValidity('1920~2025년 사이로 입력해주세요');
-    } else {
-      e.target.setCustomValidity('');
-    }
   }
+
+  // 연도 직접 입력 시 4자리 초과 방지
+  document.addEventListener('keydown', function(e) {
+    var el = e.target;
+    if (el && el.type === 'date') {
+      var val = el.value || '';
+      var parts = val.split('-');
+      if (parts[0] && parts[0].length >= 4 && !isNaN(e.key) && el.selectionStart < 5) {
+        e.preventDefault();
+      }
+    }
+  });
 
   function toggleKoreanOnly(lang) {
     var saju = document.getElementById('saju-section');
