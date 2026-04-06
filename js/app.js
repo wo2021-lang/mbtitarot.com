@@ -821,6 +821,10 @@
     dailyCardFlipped = false;
     var inner = document.getElementById('daily-card-inner');
     if (inner) inner.classList.remove('flipped');
+    var expertEl = document.getElementById('daily-expert-reading');
+    if (expertEl) expertEl.style.display = 'none';
+    // 자동으로 카드 뒤집기 + 점괘 표시
+    setTimeout(function () { window.flipDailyCard(); }, 600);
   }
 
   window.flipDailyCard = function () {
