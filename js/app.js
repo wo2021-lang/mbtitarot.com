@@ -260,6 +260,7 @@
     initPoints();
     initParticles();
     showTopNav(true);
+    loadCoupangAds();
 
     // 최초 접속 시 안내 팝업 표시
     if (!localStorage.getItem('mystical_welcome_seen')) {
@@ -270,6 +271,58 @@
       }, 800);
     }
   }
+
+  /* ============ 쿠팡 파트너스 광고 (한국어만) ============ */
+  var COUPANG_COOLDOWN = 2 * 60 * 60 * 1000; // 2시간
+  var COUPANG_POINTS = 20;
+
+  function canEarnCoupangPoints() {
+    var last = parseInt(localStorage.getItem('coupang_last_earn') || '0', 10);
+    return Date.now() - last >= COUPANG_COOLDOWN;
+  }
+
+  function getCoupangCooldownText() {
+    var last = parseInt(localStorage.getItem('coupang_last_earn') || '0', 10);
+    var diff = COUPANG_COOLDOWN - (Date.now() - last);
+    if (diff <= 0) return '';
+    var h = Math.floor(diff / 3600000);
+    var m = Math.floor((diff % 3600000) / 60000);
+    return h + '시간 ' + m + '분 후 적립 가능';
+  }
+
+  function onCoupangAdClick() {
+    if (canEarnCoupangPoints()) {
+      localStorage.setItem('coupang_last_earn', String(Date.now()));
+      addPoints(COUPANG_POINTS);
+      updatePointsDisplay();
+      showToast('+' + COUPANG_POINTS + 'P 적립!');
+    }
+  }
+
+  function loadCoupangAds() {
+    var lang = window.getLang ? window.getLang() : 'en';
+    var slots = ['ad-landing', 'ad-home-top', 'ad-result'];
+    slots.forEach(function(id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      if (lang === 'ko') {
+        var canEarn = canEarnCoupangPoints();
+        var notice = canEarn
+          ? '<p class="coupang-notice">🛒 쿠팡 광고 클릭 시 <strong>+' + COUPANG_POINTS + 'P</strong> 적립 (2시간마다)</p>'
+          : '<p class="coupang-notice coupang-cooldown">⏳ ' + getCoupangCooldownText() + '</p>';
+        el.innerHTML = notice + '<div class="coupang-ad" onclick="onCoupangAdClick()"></div>';
+        var sc = document.createElement('script');
+        sc.src = 'https://ads-partners.coupang.com/g.js';
+        sc.onload = function() {
+          new PartnersCoupang.G({"id":978458,"template":"carousel","trackingCode":"AF1130043","width":"320","height":"100","tsource":""});
+        };
+        el.appendChild(sc);
+      } else {
+        el.innerHTML = '<div class="ad-placeholder">AD</div>';
+      }
+    });
+  }
+  window.onCoupangAdClick = onCoupangAdClick;
 
   /* ============ 포인트 시스템 ============ */
   function initPoints() {
@@ -526,6 +579,7 @@
     highlightLangBtn();
     toggleKoreanOnly(lang);
     document.documentElement.lang = lang;
+    loadCoupangAds();
     showToast(lang.toUpperCase());
   };
 
