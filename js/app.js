@@ -1194,9 +1194,16 @@
 
     var textEl = document.getElementById('shuffle-text');
     var lang = window.getLang ? window.getLang() : 'en';
-    var msgs = lang === 'ko'
-      ? ['카드를 섞고 있습니다...', '당신의 기운을 느끼고 있습니다...', '카드가 준비되었습니다...']
-      : ['Shuffling the cards...', 'Sensing your energy...', 'Cards are ready...'];
+    var shuffleMsgs = {
+      ko: ['카드를 섞고 있습니다...', '당신의 기운을 느끼고 있습니다...', '카드가 준비되었습니다...'],
+      en: ['Shuffling the cards...', 'Sensing your energy...', 'Cards are ready...'],
+      ja: ['カードをシャッフルしています...', 'あなたの気を感じています...', 'カードの準備ができました...'],
+      es: ['Barajando las cartas...', 'Sintiendo tu energía...', 'Las cartas están listas...'],
+      pt: ['Embaralhando as cartas...', 'Sentindo sua energia...', 'As cartas estão prontas...'],
+      fr: ['Mélange des cartes...', 'Ressenti de votre énergie...', 'Les cartes sont prêtes...'],
+      de: ['Karten werden gemischt...', 'Ihre Energie wird gespürt...', 'Die Karten sind bereit...']
+    };
+    var msgs = shuffleMsgs[lang] || shuffleMsgs.en;
     var mi = 0;
     var msgInterval = setInterval(function () {
       mi++;
@@ -2482,7 +2489,7 @@
       try {
         var bp = birth.split('-');
         var z = window.ZODIAC.getZodiac(parseInt(bp[1]), parseInt(bp[2]));
-        if (z) zodiac = z.symbol + ' ' + (z.name[lang] || z.name.ko || z.name.en);
+        if (z) zodiac = z.symbol + ' ' + (z.name[lang] || z.name.en);
       } catch(e) {}
     }
     var el = document.getElementById('compat-my-info');
