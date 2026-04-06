@@ -316,7 +316,7 @@
     adDiv.onclick = onCoupangAdClick;
     el.appendChild(adDiv);
     try {
-      new PartnersCoupang.G({"id":978458,"template":"carousel","trackingCode":"AF1130043","width":"320","height":"100","tsource":"",subId:el.id});
+      new PartnersCoupang.G({"id":978458,"trackingCode":"AF1130043","subId":null,"template":"carousel","width":"320","height":"100"});
     } catch(e) { console.error('Coupang ad error:', e); }
   }
 
