@@ -753,14 +753,12 @@
     <button class="nav" onclick="navigateTo('category-screen',this)"><span>🔮</span><small data-i18n="nav_reading">운세</small></button>
     <button class="nav" onclick="navigateTo('gallery-screen',this)"><span>🃏</span><small data-i18n="nav_gallery">도감</small></button>
     <button class="nav" onclick="navigateTo('profile-screen',this)"><span>👤</span><small data-i18n="nav_profile">정보</small></button>
+    <div id="points-header" class="points-header" onclick="showPointsInfo()">
+        <span class="points-icon">✦</span>
+        <span id="points-balance">0</span>
+        <span class="points-unit">P</span>
+    </div>
 </nav>
-
-<!-- 포인트 헤더 (상단 메뉴 아래 가운데) -->
-<div id="points-header" class="points-header" onclick="showPointsInfo()" style="display:none">
-    <span class="points-icon">✦</span>
-    <span id="points-balance">0</span>
-    <span class="points-unit">P</span>
-</div>
 
 <div id="toast" class="toast"></div>
 

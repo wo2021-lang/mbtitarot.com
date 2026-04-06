@@ -1626,17 +1626,15 @@ body {
 
 /* ======== 포인트 헤더 ======== */
 .points-header {
-    display: flex; align-items: center; justify-content: center; gap: 4px;
-    margin: 4px auto 0;
-    padding: 5px 16px;
-    background: rgba(10,10,26,0.85);
-    backdrop-filter: blur(8px);
+    display: flex; align-items: center; gap: 4px;
+    padding: 4px 12px;
+    background: rgba(212,175,55,0.1);
     border: 1px solid rgba(212,175,55,0.3);
     border-radius: 20px; cursor: pointer;
-    width: fit-content;
     transition: all 0.3s;
     font-family: var(--font-sans);
     font-size: 0.8rem;
+    margin-left: auto;
 }
 .points-header:hover {
     border-color: var(--gold);

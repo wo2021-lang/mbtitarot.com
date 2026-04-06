@@ -346,7 +346,7 @@
     var el = document.getElementById('points-balance');
     if (el) el.textContent = pts;
     var hdr = document.getElementById('points-header');
-    if (hdr) hdr.style.display = 'flex';
+    if (hdr) hdr.style.display = '';
     var bal = document.getElementById('point-balance-display');
     if (bal) bal.textContent = L('points_have', {n: pts});
     var modalD = document.getElementById('modal-points-display');
