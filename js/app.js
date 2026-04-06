@@ -251,9 +251,8 @@
     var sb = document.getElementById('setup-birth');
     if (sb) sb.addEventListener('change', updateZodiacPreview);
 
-    // 날짜 입력 연도 4자리 제한
+    // 날짜 입력 연도 4자리 제한 (change에서만)
     document.querySelectorAll('input[type="date"]').forEach(function(inp) {
-      inp.addEventListener('input', fixDateYear);
       inp.addEventListener('change', fixDateYear);
     });
 
