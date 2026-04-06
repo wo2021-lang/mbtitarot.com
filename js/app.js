@@ -299,26 +299,7 @@
     }
   }
 
-  var coupangScriptLoaded = false;
-
-  function loadCoupangScript(callback) {
-    if (coupangScriptLoaded) { callback(); return; }
-    if (window.PartnersCoupang) { coupangScriptLoaded = true; callback(); return; }
-    var sc = document.createElement('script');
-    sc.src = 'https://ads-partners.coupang.com/g.js';
-    sc.onload = function() { coupangScriptLoaded = true; callback(); };
-    document.head.appendChild(sc);
-  }
-
-  function renderCoupangAd(el) {
-    var adDiv = document.createElement('div');
-    adDiv.className = 'coupang-ad';
-    adDiv.onclick = onCoupangAdClick;
-    el.appendChild(adDiv);
-    try {
-      new PartnersCoupang.G({"id":978458,"trackingCode":"AF1130043","subId":null,"template":"carousel","width":"320","height":"100"});
-    } catch(e) { console.error('Coupang ad error:', e); }
-  }
+  var COUPANG_IFRAME = '<iframe src="https://ads-partners.coupang.com/widgets.html?id=978458&template=carousel&trackingCode=AF1130043&subId=&width=320&height=100&tsource=" width="320" height="100" frameborder="0" scrolling="no" referrerpolicy="unsafe-url" browsingtopics style="max-width:100%;"></iframe>';
 
   function loadCoupangAds() {
     var lang = window.getLang ? window.getLang() : 'en';
@@ -331,8 +312,7 @@
         var notice = canEarn
           ? '<p class="coupang-notice">🛒 쿠팡 광고 클릭 시 <strong>+' + COUPANG_POINTS + 'P</strong> 적립 (2시간마다)</p>'
           : '<p class="coupang-notice coupang-cooldown">⏳ ' + getCoupangCooldownText() + '</p>';
-        el.innerHTML = notice;
-        loadCoupangScript(function() { renderCoupangAd(el); });
+        el.innerHTML = notice + '<div class="coupang-ad" onclick="onCoupangAdClick()">' + COUPANG_IFRAME + '</div>';
       } else {
         el.innerHTML = '<div class="ad-placeholder">AD</div>';
       }
