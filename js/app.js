@@ -657,6 +657,14 @@
     }
     var titleText = window.t ? window.t('app_name') : 'Mystical Orion MBTI Tarot';
     document.title = titleText.replace(/\n/g, ' ');
+    // 서비스 안내 링크에 lang 파라미터 추가
+    var currentLang = window.getLang ? window.getLang() : 'ko';
+    document.querySelectorAll('.content-links-grid a').forEach(function(a) {
+      var href = a.getAttribute('href');
+      if (href && href.indexOf('.html') !== -1) {
+        a.href = href.split('?')[0] + (currentLang !== 'ko' ? '?lang=' + currentLang : '');
+      }
+    });
   }
 
   function highlightLangBtn() {
