@@ -102,62 +102,68 @@
     <p style="text-align:center;margin-top:24px"><a href="/" style="color:var(--gold);font-weight:bold;font-size:1.1rem"><span data-si18n="cta_tarot">지금 무료로 타로 점사 보러 가기 →</span></a></p>
 </div>
 
-<script src="js/static-i18n.js"></script>
 <script src="js/tarot.js"></script>
+<script src="js/static-i18n.js"></script>
 <script>
-(function() {
-    var EL_SYMBOLS = { fire: '🔥', water: '💧', air: '🌬️', earth: '🌍' };
-    var ROMANS = ['0','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV','XVI','XVII','XVIII','XIX','XX','XXI'];
+document.addEventListener('DOMContentLoaded', function() {
+    try {
+        var EL_SYMBOLS = { fire: '🔥', water: '💧', air: '🌬️', earth: '🌍' };
+        var ROMANS = ['0','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV','XVI','XVII','XVIII','XIX','XX','XXI'];
 
-    function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+        function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
 
-    var lang = (window.STATIC_I18N && window.STATIC_I18N.lang) || 'ko';
-    var t = window.STATIC_I18N ? window.STATIC_I18N.t.bind(window.STATIC_I18N) : function(k){return k;};
+        var lang = (window.STATIC_I18N && window.STATIC_I18N.lang) || 'ko';
+        var t = window.STATIC_I18N ? window.STATIC_I18N.t.bind(window.STATIC_I18N) : function(k){return k;};
 
-    function renderCard(card) {
-        var el = card.element || 'air';
-        var sym = EL_SYMBOLS[el] || '🌬️';
-        var prefix = card.type === 'major' ? (ROMANS[card.number] || card.number) + '. ' : '';
-        var name = card.name[lang] || card.name.en;
-        var nameEn = lang !== 'en' ? card.name.en : '';
-        var kw = (card.keywords[lang] || card.keywords.en || []).join(', ');
-        var up = card.upright[lang] || card.upright.en || '';
-        var rev = card.reversed[lang] || card.reversed.en || '';
+        function renderCard(card) {
+            var el = card.element || 'air';
+            var sym = EL_SYMBOLS[el] || '🌬️';
+            var prefix = card.type === 'major' ? (ROMANS[card.number] || card.number) + '. ' : '';
+            var name = card.name[lang] || card.name.en;
+            var nameEn = lang !== 'en' ? card.name.en : '';
+            var kw = (card.keywords[lang] || card.keywords.en || []).join(', ');
+            var up = card.upright[lang] || card.upright.en || '';
+            var rev = card.reversed[lang] || card.reversed.en || '';
 
-        return '<div class="card-entry">' +
-            '<div class="card-entry-header">' +
-                '<span class="card-entry-element">' + sym + '</span>' +
-                '<h4>' + prefix + esc(name) + (nameEn ? ' <span class="card-en-name">' + esc(nameEn) + '</span>' : '') + '</h4>' +
-            '</div>' +
-            '<div class="card-entry-keywords"><span class="kw-label">' + t('kw_label') + '</span> ' + esc(kw) + '</div>' +
-            '<div class="card-entry-interp">' +
-                '<div class="interp-upright"><span class="dir-badge upright">' + t('dir_upright') + '</span><p>' + esc(up) + '</p></div>' +
-                '<div class="interp-reversed"><span class="dir-badge reversed">' + t('dir_reversed') + '</span><p>' + esc(rev) + '</p></div>' +
-            '</div>' +
-        '</div>';
-    }
-
-    if (window.TAROT && window.TAROT.cards) {
-        var cards = window.TAROT.cards;
-        var majorHtml = '', wandsHtml = '', cupsHtml = '', swordsHtml = '', pentaclesHtml = '';
-
-        for (var i = 0; i < cards.length; i++) {
-            var c = cards[i];
-            var html = renderCard(c);
-            if (c.type === 'major') majorHtml += html;
-            else if (c.suit === 'wands') wandsHtml += html;
-            else if (c.suit === 'cups') cupsHtml += html;
-            else if (c.suit === 'swords') swordsHtml += html;
-            else if (c.suit === 'pentacles') pentaclesHtml += html;
+            return '<div class="card-entry">' +
+                '<div class="card-entry-header">' +
+                    '<span class="card-entry-element">' + sym + '</span>' +
+                    '<h4>' + prefix + esc(name) + (nameEn ? ' <span class="card-en-name">' + esc(nameEn) + '</span>' : '') + '</h4>' +
+                '</div>' +
+                '<div class="card-entry-keywords"><span class="kw-label">' + t('kw_label') + '</span> ' + esc(kw) + '</div>' +
+                '<div class="card-entry-interp">' +
+                    '<div class="interp-upright"><span class="dir-badge upright">' + t('dir_upright') + '</span><p>' + esc(up) + '</p></div>' +
+                    '<div class="interp-reversed"><span class="dir-badge reversed">' + t('dir_reversed') + '</span><p>' + esc(rev) + '</p></div>' +
+                '</div>' +
+            '</div>';
         }
 
-        document.getElementById('major-cards').innerHTML = majorHtml;
-        document.getElementById('wands-cards').innerHTML = wandsHtml;
-        document.getElementById('cups-cards').innerHTML = cupsHtml;
-        document.getElementById('swords-cards').innerHTML = swordsHtml;
-        document.getElementById('pentacles-cards').innerHTML = pentaclesHtml;
+        var allCards = window.TAROT ? (window.TAROT.cards || window.TAROT.getAll()) : null;
+        if (allCards && allCards.length > 0) {
+            var majorHtml = '', wandsHtml = '', cupsHtml = '', swordsHtml = '', pentaclesHtml = '';
+
+            for (var i = 0; i < allCards.length; i++) {
+                var c = allCards[i];
+                var html = renderCard(c);
+                if (c.type === 'major') majorHtml += html;
+                else if (c.suit === 'wands') wandsHtml += html;
+                else if (c.suit === 'cups') cupsHtml += html;
+                else if (c.suit === 'swords') swordsHtml += html;
+                else if (c.suit === 'pentacles') pentaclesHtml += html;
+            }
+
+            document.getElementById('major-cards').innerHTML = majorHtml;
+            document.getElementById('wands-cards').innerHTML = wandsHtml;
+            document.getElementById('cups-cards').innerHTML = cupsHtml;
+            document.getElementById('swords-cards').innerHTML = swordsHtml;
+            document.getElementById('pentacles-cards').innerHTML = pentaclesHtml;
+        } else {
+            document.getElementById('major-cards').innerHTML = '<p style="color:var(--text-secondary)">카드 데이터를 불러오는 중 오류가 발생했습니다. 페이지를 새로고침해주세요.</p>';
+        }
+    } catch(e) {
+        console.error('Card render error:', e);
     }
-})();
+});
 </script>
 </body>
 </html>
