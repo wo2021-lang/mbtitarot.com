@@ -260,6 +260,7 @@
     initParticles();
     showTopNav(true);
     loadCoupangAds();
+    updateVisitorCounter();
 
     // 최초 접속 시 안내 팝업 표시
     if (!localStorage.getItem('mystical_welcome_seen')) {
@@ -312,6 +313,37 @@
       showToast('+' + COUPANG_POINTS + 'P 적립! (남은 횟수: ' + remain + ')');
     } else {
       showToast('⏳ ' + getCoupangCooldownText());
+    }
+  }
+
+  /* ──── 방문자 카운터 ──── */
+  function updateVisitorCounter() {
+    var currentLang = window.getLang ? window.getLang() : 'ko';
+    var data = {};
+    try {
+      data = JSON.parse(localStorage.getItem('mystical_visitors') || '{}');
+    } catch(e) { data = {}; }
+
+    // 언어별 카운트 +1
+    var langs = ['ko','en','ja','es','pt','fr','de'];
+    for (var i = 0; i < langs.length; i++) {
+      if (!data[langs[i]]) data[langs[i]] = 0;
+    }
+    data[currentLang] = (data[currentLang] || 0) + 1;
+
+    localStorage.setItem('mystical_visitors', JSON.stringify(data));
+
+    // 전체 합산
+    var total = 0;
+    for (var k in data) { if (data.hasOwnProperty(k)) total += data[k]; }
+
+    // 화면 업데이트
+    var totalEl = document.getElementById('visitor-total');
+    if (totalEl) totalEl.textContent = total.toLocaleString();
+
+    for (var j = 0; j < langs.length; j++) {
+      var el = document.getElementById('vc-' + langs[j]);
+      if (el) el.textContent = (data[langs[j]] || 0).toLocaleString();
     }
   }
 

@@ -3820,3 +3820,69 @@ body {
     border-color: var(--gold-dark);
     background: rgba(201, 162, 39, 0.08);
 }
+
+/* 방문자 카운터 */
+.visitor-counter {
+    margin-top: 32px;
+    padding: 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    text-align: center;
+}
+
+.visitor-counter h4 {
+    color: var(--gold-light);
+    font-family: var(--font-serif);
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+}
+
+.visitor-total {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.visitor-total-label {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+.visitor-total-num {
+    color: var(--gold);
+    font-size: 1.6rem;
+    font-weight: bold;
+    font-family: var(--font-serif);
+}
+
+.visitor-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+}
+
+.visitor-lang {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 10px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 20px;
+    font-size: 0.8rem;
+}
+
+.visitor-lang span:first-child {
+    font-size: 1rem;
+}
+
+.vl-count {
+    color: var(--text-primary);
+    font-weight: bold;
+    min-width: 20px;
+    text-align: right;
+}
