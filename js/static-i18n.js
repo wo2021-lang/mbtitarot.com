@@ -75,5 +75,37 @@
         links[j].href = '/?lang=' + currentLang;
       }
     }
+
+    // 페이지 전체 번역 (PAGE_I18N 변수가 있으면 적용)
+    if (currentLang !== 'ko' && typeof PAGE_I18N !== 'undefined' && PAGE_I18N[currentLang]) {
+      var tr = PAGE_I18N[currentLang];
+      // 제목 변경
+      if (tr.title) {
+        var h1 = document.querySelector('.static-page h1');
+        if (h1 && !h1.classList.contains('blog-detail-title')) h1.textContent = tr.title;
+        // HTML title도 변경
+        var pageTitle = document.title;
+        var koTitle = document.querySelector('meta[name="ko-title"]');
+        if (tr.title) {
+          document.title = tr.title + ' | Mystical Orion MBTI Tarot';
+        }
+      }
+      // 본문 변경
+      if (tr.content) {
+        var article = document.querySelector('article.content-article');
+        if (article) article.innerHTML = tr.content;
+      }
+    }
+
+    // 다른 정적 페이지 링크에도 lang 파라미터 추가
+    if (currentLang !== 'ko') {
+      var pageLinks = document.querySelectorAll('a[href$=".html"]');
+      for (var k = 0; k < pageLinks.length; k++) {
+        var href = pageLinks[k].getAttribute('href');
+        if (href && href.indexOf('lang=') === -1) {
+          pageLinks[k].href = href + '?lang=' + currentLang;
+        }
+      }
+    }
   });
 })();
