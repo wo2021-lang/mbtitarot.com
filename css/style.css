@@ -3692,3 +3692,131 @@ body {
   .cell-char { font-size: 1.4rem; }
   .year-fortune-row { flex-direction: column; }
 }
+
+/* ======== 콘텐츠 페이지 (타로 가이드, 약관, FAQ 등) ======== */
+.content-page {
+    padding-bottom: 100px;
+}
+
+.content-article {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: 24px 20px;
+    margin-top: 16px;
+    line-height: 1.8;
+    color: var(--text-primary);
+}
+
+.content-article h3 {
+    color: var(--gold-light);
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    margin: 24px 0 10px 0;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.content-article h3:first-child {
+    margin-top: 0;
+}
+
+.content-article h4 {
+    color: var(--accent-purple);
+    font-size: 0.95rem;
+    margin: 16px 0 6px 0;
+}
+
+.content-article p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+}
+
+.content-article ul {
+    padding-left: 20px;
+    margin-bottom: 12px;
+}
+
+.content-article ul li {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    line-height: 1.6;
+}
+
+.content-article a {
+    color: var(--gold);
+    text-decoration: underline;
+}
+
+.content-article .content-date {
+    text-align: right;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    margin-top: 20px;
+}
+
+.faq-item {
+    margin-bottom: 8px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.faq-item:last-child {
+    border-bottom: none;
+}
+
+.faq-item h3 {
+    color: var(--gold) !important;
+    font-size: 0.95rem !important;
+    border-bottom: none !important;
+    padding-bottom: 0 !important;
+}
+
+.faq-item p, .faq-item ul {
+    margin-left: 8px;
+}
+
+/* 콘텐츠 링크 (랜딩 화면 하단) */
+.content-links {
+    margin-top: 32px;
+    padding: 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    text-align: center;
+}
+
+.content-links h4 {
+    color: var(--gold-light);
+    font-family: var(--font-serif);
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+}
+
+.content-links-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+}
+
+.content-links-grid a {
+    display: inline-block;
+    padding: 8px 14px;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+}
+
+.content-links-grid a:hover {
+    color: var(--gold-light);
+    border-color: var(--gold-dark);
+    background: rgba(201, 162, 39, 0.08);
+}
