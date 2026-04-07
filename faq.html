@@ -16,10 +16,11 @@
         .static-page .back-home:hover { color: var(--gold-light); }
         .static-page h1 { color: var(--gold-light); font-family: var(--font-serif); font-size: 1.5rem; margin-bottom: 20px; text-align: center; }
     </style>
+    <script src="js/static-i18n.js"></script>
 </head>
 <body>
 <div class="static-page">
-    <a href="/" class="back-home">← 홈으로 돌아가기</a>
+    <a href="/" class="back-home"><span data-si18n="back_home">← 홈으로 돌아가기</span></a>
     <h1>자주 묻는 질문 (FAQ)</h1>
     <article class="content-article">
         <div class="faq-item">
@@ -87,7 +88,7 @@
             <p>A. 서비스 관련 문의, 광고 및 제휴 문의는 <strong>wo2021@gmail.com</strong>으로 이메일을 보내주시면 됩니다.</p>
         </div>
     </article>
-    <p style="text-align:center;margin-top:20px"><a href="/" style="color:var(--gold);font-weight:bold;font-size:1.1rem">무료 타로 점사 보러 가기 →</a></p>
+    <p style="text-align:center;margin-top:20px"><a href="/" style="color:var(--gold);font-weight:bold;font-size:1.1rem"><span data-si18n="cta_tarot">무료 타로 점사 보러 가기 →</span></a></p>
 </div>
 </body>
 </html>
