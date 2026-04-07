@@ -158,6 +158,8 @@
         .ql-snow .ql-active { color: var(--gold) !important; }
         .ql-snow button:hover .ql-stroke { stroke: var(--gold-light) !important; }
         .ql-snow button:hover .ql-fill { fill: var(--gold-light) !important; }
+        .ql-editor img { max-width: 100%; height: auto; border-radius: 8px; margin: 8px 0; }
+        .blog-detail-content img { max-width: 100%; height: auto; border-radius: 8px; margin: 12px 0; }
         .editor-form .form-group small { color: var(--text-dim); font-size: 0.75rem; }
         .editor-actions { display: flex; gap: 8px; margin-top: 12px; }
         .btn-publish {
@@ -300,6 +302,38 @@ var isAdmin = false;
 var currentPostId = null;
 var quill = null;
 
+// 이미지를 리사이즈하여 base64로 변환
+function resizeImage(file, maxWidth, callback) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        var img = new Image();
+        img.onload = function() {
+            var w = img.width;
+            var h = img.height;
+            if (w > maxWidth) {
+                h = Math.round(h * maxWidth / w);
+                w = maxWidth;
+            }
+            var canvas = document.createElement('canvas');
+            canvas.width = w;
+            canvas.height = h;
+            var ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, w, h);
+            var dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+            callback(dataUrl);
+        };
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+
+// Quill에 이미지 삽입
+function insertImageToQuill(dataUrl) {
+    var range = quill.getSelection(true);
+    quill.insertEmbed(range.index, 'image', dataUrl);
+    quill.setSelection(range.index + 1);
+}
+
 // Quill 에디터 초기화
 function initQuill() {
     if (quill) return;
@@ -307,16 +341,61 @@ function initQuill() {
         theme: 'snow',
         placeholder: '본문을 작성하세요...',
         modules: {
-            toolbar: [
-                [{ 'header': [1, 2, 3, false] }],
-                ['bold', 'italic', 'underline', 'strike'],
-                [{ 'color': [] }, { 'background': [] }],
-                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                ['blockquote'],
-                [{ 'align': [] }],
-                ['link'],
-                ['clean']
-            ]
+            toolbar: {
+                container: [
+                    [{ 'header': [1, 2, 3, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['blockquote'],
+                    [{ 'align': [] }],
+                    ['link', 'image', 'video'],
+                    ['clean']
+                ],
+                handlers: {
+                    'image': function() {
+                        var input = document.createElement('input');
+                        input.setAttribute('type', 'file');
+                        input.setAttribute('accept', 'image/*');
+                        input.click();
+                        input.onchange = function() {
+                            var file = input.files[0];
+                            if (!file) return;
+                            resizeImage(file, 800, function(dataUrl) {
+                                insertImageToQuill(dataUrl);
+                            });
+                        };
+                    }
+                }
+            }
+        }
+    });
+
+    // 클립보드에서 이미지 붙여넣기
+    quill.root.addEventListener('paste', function(e) {
+        var items = (e.clipboardData || e.originalEvent.clipboardData).items;
+        for (var i = 0; i < items.length; i++) {
+            if (items[i].type.indexOf('image') !== -1) {
+                e.preventDefault();
+                var file = items[i].getAsFile();
+                resizeImage(file, 800, function(dataUrl) {
+                    insertImageToQuill(dataUrl);
+                });
+                return;
+            }
+        }
+    });
+
+    // 드래그 앤 드롭 이미지
+    quill.root.addEventListener('drop', function(e) {
+        e.preventDefault();
+        var files = e.dataTransfer.files;
+        for (var i = 0; i < files.length; i++) {
+            if (files[i].type.indexOf('image') !== -1) {
+                resizeImage(files[i], 800, function(dataUrl) {
+                    insertImageToQuill(dataUrl);
+                });
+            }
         }
     });
 }
