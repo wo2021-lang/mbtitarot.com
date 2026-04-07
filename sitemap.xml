@@ -15,4 +15,34 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://mbtitarot.com/?lang=de"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mbtitarot.com/"/>
   </url>
+  <url>
+    <loc>https://mbtitarot.com/guide.html</loc>
+    <lastmod>2026-04-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mbtitarot.com/mbti-guide.html</loc>
+    <lastmod>2026-04-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mbtitarot.com/faq.html</loc>
+    <lastmod>2026-04-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mbtitarot.com/terms.html</loc>
+    <lastmod>2026-04-07</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://mbtitarot.com/privacy.html</loc>
+    <lastmod>2026-04-07</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
 </urlset>
