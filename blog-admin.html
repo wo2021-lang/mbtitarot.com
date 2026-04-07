@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0a1a">
+    <title>블로그 관리</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body { background: var(--bg-primary); min-height: 100vh; }
+        .admin-page { max-width: 720px; margin: 0 auto; padding: 24px 16px 60px; }
+        .admin-page h1 { color: var(--gold-light); font-family: var(--font-serif); font-size: 1.3rem; margin-bottom: 20px; text-align: center; }
+
+        /* 로그인 */
+        .login-box {
+            max-width: 320px; margin: 80px auto; text-align: center;
+            background: var(--bg-secondary); border: 1px solid var(--border-subtle);
+            border-radius: 16px; padding: 40px 24px;
+        }
+        .login-box h2 { color: var(--gold-light); font-size: 1.1rem; margin-bottom: 20px; }
+        .login-box input {
+            width: 100%; padding: 12px; border-radius: 8px;
+            border: 1px solid var(--border-subtle); background: var(--bg-card);
+            color: var(--text-primary); font-size: 1rem; margin-bottom: 12px;
+            text-align: center;
+        }
+        .login-box button {
+            width: 100%; padding: 12px; border-radius: 8px; border: none;
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+            color: #000; font-weight: bold; font-size: 0.95rem; cursor: pointer;
+        }
+
+        /* 관리 영역 */
+        .admin-area { display: none; }
+        .admin-area.active { display: block; }
+
+        .admin-nav { display: flex; gap: 8px; margin-bottom: 20px; }
+        .admin-nav button {
+            flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--border-subtle);
+            background: var(--bg-secondary); color: var(--text-secondary);
+            cursor: pointer; font-size: 0.85rem;
+        }
+        .admin-nav button.active {
+            background: var(--gold-dark); color: #fff; border-color: var(--gold);
+        }
+
+        /* 글쓰기 폼 */
+        .write-form { display: none; }
+        .write-form.active { display: block; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label {
+            display: block; color: var(--gold); font-size: 0.85rem;
+            margin-bottom: 6px; font-weight: bold;
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%; padding: 10px 12px; border-radius: 8px;
+            border: 1px solid var(--border-subtle); background: var(--bg-card);
+            color: var(--text-primary); font-size: 0.9rem; font-family: var(--font-sans);
+        }
+        .form-group textarea { min-height: 300px; resize: vertical; line-height: 1.7; }
+        .form-group small { color: var(--text-dim); font-size: 0.75rem; }
+
+        .btn-submit {
+            width: 100%; padding: 14px; border-radius: 10px; border: none;
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+            color: #000; font-weight: bold; font-size: 1rem; cursor: pointer;
+            margin-top: 8px;
+        }
+        .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-delete {
+            width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--accent-rose);
+            background: transparent; color: var(--accent-rose); font-size: 0.9rem;
+            cursor: pointer; margin-top: 8px;
+        }
+
+        /* 글 목록 (관리) */
+        .admin-posts { display: none; }
+        .admin-posts.active { display: block; }
+        .admin-post-item {
+            background: var(--bg-secondary); border: 1px solid var(--border-subtle);
+            border-radius: 10px; padding: 14px 16px; margin-bottom: 8px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .admin-post-title { color: var(--text-primary); font-size: 0.9rem; flex: 1; }
+        .admin-post-date { color: var(--text-dim); font-size: 0.75rem; margin: 0 12px; }
+        .admin-post-actions button {
+            padding: 6px 12px; border-radius: 6px; border: none;
+            font-size: 0.75rem; cursor: pointer; margin-left: 4px;
+        }
+        .btn-edit { background: var(--accent-indigo); color: #fff; }
+        .btn-del { background: var(--accent-rose); color: #fff; }
+
+        .msg-toast {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            background: var(--gold); color: #000; padding: 10px 24px;
+            border-radius: 8px; font-size: 0.9rem; font-weight: bold;
+            display: none; z-index: 999;
+        }
+    </style>
+</head>
+<body>
+
+<div id="msg-toast" class="msg-toast"></div>
+
+<!-- 로그인 화면 -->
+<div id="login-box" class="login-box">
+    <h2>🔒 관리자 로그인</h2>
+    <input type="password" id="admin-pw" placeholder="비밀번호 입력" onkeypress="if(event.key==='Enter')doLogin()">
+    <button onclick="doLogin()">로그인</button>
+</div>
+
+<!-- 관리 영역 -->
+<div id="admin-area" class="admin-area">
+    <div class="admin-page">
+        <h1>📝 블로그 관리</h1>
+
+        <div class="admin-nav">
+            <button id="nav-write" class="active" onclick="switchTab('write')">새 글 쓰기</button>
+            <button id="nav-list" onclick="switchTab('list')">글 관리</button>
+        </div>
+
+        <!-- 글쓰기 -->
+        <div id="tab-write" class="write-form active">
+            <input type="hidden" id="edit-id" value="">
+            <div class="form-group">
+                <label>제목</label>
+                <input type="text" id="post-title" placeholder="글 제목을 입력하세요">
+            </div>
+            <div class="form-group">
+                <label>요약 (목록에 표시)</label>
+                <input type="text" id="post-summary" placeholder="한 줄 요약">
+            </div>
+            <div class="form-group">
+                <label>태그 (쉼표로 구분)</label>
+                <input type="text" id="post-tags" placeholder="예: 타로, MBTI, 운세">
+            </div>
+            <div class="form-group">
+                <label>작성자</label>
+                <input type="text" id="post-author" placeholder="작성자 이름" value="Mystical Orion">
+            </div>
+            <div class="form-group">
+                <label>본문</label>
+                <textarea id="post-content" placeholder="본문을 작성하세요.&#10;&#10;## 소제목은 ##으로 시작&#10;### 작은 제목은 ###으로 시작&#10;&#10;빈 줄로 단락을 구분합니다."></textarea>
+                <small>## 소제목, ### 작은제목, 빈 줄로 단락 구분</small>
+            </div>
+            <button class="btn-submit" id="btn-save" onclick="savePost()">게시하기</button>
+        </div>
+
+        <!-- 글 목록 관리 -->
+        <div id="tab-list" class="admin-posts">
+            <div id="admin-post-list"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Firebase CDN -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="js/firebase-blog.js"></script>
+
+<script>
+var ADMIN_PASSWORD = 'mystical2026';
+var isLoggedIn = false;
+
+function doLogin() {
+    var pw = document.getElementById('admin-pw').value;
+    if (pw === ADMIN_PASSWORD) {
+        isLoggedIn = true;
+        document.getElementById('login-box').style.display = 'none';
+        document.getElementById('admin-area').classList.add('active');
+        showToast('로그인 성공!');
+    } else {
+        alert('비밀번호가 틀렸습니다.');
+    }
+}
+
+function switchTab(tab) {
+    document.getElementById('nav-write').classList.remove('active');
+    document.getElementById('nav-list').classList.remove('active');
+    document.getElementById('tab-write').classList.remove('active');
+    document.getElementById('tab-list').classList.remove('active');
+
+    if (tab === 'write') {
+        document.getElementById('nav-write').classList.add('active');
+        document.getElementById('tab-write').classList.add('active');
+    } else {
+        document.getElementById('nav-list').classList.add('active');
+        document.getElementById('tab-list').classList.add('active');
+        loadAdminPosts();
+    }
+}
+
+// 글 저장
+function savePost() {
+    var title = document.getElementById('post-title').value.trim();
+    var summary = document.getElementById('post-summary').value.trim();
+    var tags = document.getElementById('post-tags').value.trim();
+    var author = document.getElementById('post-author').value.trim();
+    var content = document.getElementById('post-content').value.trim();
+    var editId = document.getElementById('edit-id').value;
+
+    if (!title || !content) {
+        alert('제목과 본문은 필수입니다.');
+        return;
+    }
+
+    var postData = {
+        title: title,
+        summary: summary,
+        tags: tags ? tags.split(',').map(function(t) { return t.trim(); }) : [],
+        author: author || 'Mystical Orion',
+        content: content
+    };
+
+    document.getElementById('btn-save').disabled = true;
+
+    if (editId) {
+        updateBlogPost(editId, postData, function(ok) {
+            document.getElementById('btn-save').disabled = false;
+            if (ok) {
+                showToast('글이 수정되었습니다!');
+                clearForm();
+            } else {
+                alert('수정 실패. 다시 시도해주세요.');
+            }
+        });
+    } else {
+        saveBlogPost(postData, function(ok, id) {
+            document.getElementById('btn-save').disabled = false;
+            if (ok) {
+                showToast('글이 게시되었습니다!');
+                clearForm();
+            } else {
+                alert('저장 실패. 다시 시도해주세요.');
+            }
+        });
+    }
+}
+
+function clearForm() {
+    document.getElementById('edit-id').value = '';
+    document.getElementById('post-title').value = '';
+    document.getElementById('post-summary').value = '';
+    document.getElementById('post-tags').value = '';
+    document.getElementById('post-content').value = '';
+    document.getElementById('btn-save').textContent = '게시하기';
+}
+
+// 관리 목록
+function loadAdminPosts() {
+    loadBlogPosts(function(posts) {
+        var container = document.getElementById('admin-post-list');
+        if (posts.length === 0) {
+            container.innerHTML = '<div style="text-align:center;color:var(--text-dim);padding:40px;">게시글이 없습니다.</div>';
+            return;
+        }
+        var html = '';
+        for (var i = 0; i < posts.length; i++) {
+            var p = posts[i];
+            html += '<div class="admin-post-item">'
+                + '<span class="admin-post-title">' + escapeHtml(p.title) + '</span>'
+                + '<span class="admin-post-date">' + formatDate(p.createdAt) + '</span>'
+                + '<span class="admin-post-actions">'
+                + '<button class="btn-edit" onclick="editPost(\'' + p.id + '\')">수정</button>'
+                + '<button class="btn-del" onclick="deletePost(\'' + p.id + '\')">삭제</button>'
+                + '</span></div>';
+        }
+        container.innerHTML = html;
+    });
+}
+
+// 수정
+function editPost(postId) {
+    loadBlogPost(postId, function(post) {
+        if (!post) return;
+        document.getElementById('edit-id').value = postId;
+        document.getElementById('post-title').value = post.title || '';
+        document.getElementById('post-summary').value = post.summary || '';
+        document.getElementById('post-tags').value = (post.tags || []).join(', ');
+        document.getElementById('post-author').value = post.author || '';
+        document.getElementById('post-content').value = post.content || '';
+        document.getElementById('btn-save').textContent = '수정하기';
+        switchTab('write');
+    });
+}
+
+// 삭제
+function deletePost(postId) {
+    if (!confirm('정말 삭제하시겠습니까?')) return;
+    deleteBlogPost(postId, function(ok) {
+        if (ok) {
+            showToast('삭제되었습니다.');
+            loadAdminPosts();
+        } else {
+            alert('삭제 실패.');
+        }
+    });
+}
+
+function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+function showToast(msg) {
+    var t = document.getElementById('msg-toast');
+    t.textContent = msg;
+    t.style.display = 'block';
+    setTimeout(function() { t.style.display = 'none'; }, 2000);
+}
+</script>
+</body>
+</html>

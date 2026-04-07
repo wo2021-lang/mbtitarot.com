@@ -3796,16 +3796,16 @@ body {
 }
 
 .content-links-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 8px;
 }
 
 .content-links-grid a {
-    display: inline-block;
-    padding: 8px 14px;
+    display: block;
+    padding: 10px 12px;
     font-size: 0.82rem;
+    text-align: center;
     color: var(--text-secondary);
     background: var(--bg-secondary);
     border: 1px solid var(--border-subtle);

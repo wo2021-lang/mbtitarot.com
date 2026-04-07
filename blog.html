@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0a1a">
+    <title>블로그 - Mystical Orion MBTI 타로 | 타로 이야기, 운세 칼럼</title>
+    <meta name="description" content="Mystical Orion 블로그. 타로 카드 해석, MBTI 운세 칼럼, 사주팔자 이야기, 별자리 운세 등 다양한 점술 콘텐츠를 만나보세요.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://mbtitarot.com/blog.html">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body { background: var(--bg-primary); min-height: 100vh; }
+        .static-page { max-width: 720px; margin: 0 auto; padding: 24px 16px 60px; }
+        .static-page .back-home { display: inline-block; color: var(--gold); text-decoration: none; margin-bottom: 16px; font-size: 0.9rem; }
+        .static-page .back-home:hover { color: var(--gold-light); }
+        .static-page h1 { color: var(--gold-light); font-family: var(--font-serif); font-size: 1.5rem; margin-bottom: 8px; text-align: center; }
+        .blog-desc { color: var(--text-secondary); text-align: center; font-size: 0.85rem; margin-bottom: 24px; }
+
+        .blog-list { list-style: none; padding: 0; }
+        .blog-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+        .blog-item:hover {
+            border-color: var(--gold-dark);
+            transform: translateY(-2px);
+        }
+        .blog-item-title {
+            color: var(--gold-light);
+            font-size: 1.05rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-family: var(--font-serif);
+        }
+        .blog-item-summary {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .blog-item-meta {
+            color: var(--text-dim);
+            font-size: 0.75rem;
+        }
+        .blog-item-tag {
+            display: inline-block;
+            background: rgba(201,162,39,0.1);
+            color: var(--gold);
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-right: 4px;
+        }
+
+        /* 글 상세 보기 */
+        .blog-detail { display: none; }
+        .blog-detail.active { display: block; }
+        .blog-detail-title {
+            color: var(--gold-light);
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        .blog-detail-meta {
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .blog-detail-content {
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            line-height: 1.8;
+            word-break: keep-all;
+        }
+        .blog-detail-content p { margin-bottom: 16px; }
+        .blog-detail-content h2 { color: var(--gold-light); font-size: 1.15rem; margin: 24px 0 12px; }
+        .blog-detail-content h3 { color: var(--gold); font-size: 1.05rem; margin: 20px 0 10px; }
+        .blog-back-btn {
+            display: inline-block;
+            color: var(--gold);
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+        .blog-back-btn:hover { color: var(--gold-light); }
+
+        .blog-empty {
+            text-align: center;
+            color: var(--text-dim);
+            padding: 60px 0;
+            font-size: 0.9rem;
+        }
+        .blog-loading {
+            text-align: center;
+            color: var(--text-secondary);
+            padding: 40px 0;
+        }
+    </style>
+</head>
+<body>
+<div class="static-page">
+    <a href="/" class="back-home">← 홈으로 돌아가기</a>
+
+    <!-- 글 목록 -->
+    <div id="blog-list-view">
+        <h1>✨ 블로그</h1>
+        <p class="blog-desc">타로, MBTI, 운세에 대한 이야기</p>
+        <div id="blog-loading" class="blog-loading">로딩 중...</div>
+        <ul id="blog-list" class="blog-list"></ul>
+        <div id="blog-empty" class="blog-empty" style="display:none;">
+            아직 게시글이 없습니다.<br>곧 흥미로운 글이 올라올 예정이에요! 🌙
+        </div>
+    </div>
+
+    <!-- 글 상세 -->
+    <div id="blog-detail-view" class="blog-detail">
+        <span class="blog-back-btn" onclick="showBlogList()">← 목록으로</span>
+        <h1 class="blog-detail-title" id="detail-title"></h1>
+        <div class="blog-detail-meta" id="detail-meta"></div>
+        <div class="blog-detail-content" id="detail-content"></div>
+    </div>
+</div>
+
+<!-- Firebase CDN -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="js/firebase-blog.js"></script>
+
+<script>
+// 글 목록 표시
+function renderBlogList() {
+    loadBlogPosts(function(posts) {
+        var loading = document.getElementById('blog-loading');
+        var list = document.getElementById('blog-list');
+        var empty = document.getElementById('blog-empty');
+        loading.style.display = 'none';
+
+        if (posts.length === 0) {
+            empty.style.display = 'block';
+            return;
+        }
+
+        var html = '';
+        for (var i = 0; i < posts.length; i++) {
+            var p = posts[i];
+            var tags = '';
+            if (p.tags) {
+                for (var t = 0; t < p.tags.length; t++) {
+                    tags += '<span class="blog-item-tag">' + p.tags[t] + '</span>';
+                }
+            }
+            html += '<li class="blog-item" onclick="showBlogDetail(\'' + p.id + '\')">'
+                + '<div class="blog-item-title">' + escapeHtml(p.title) + '</div>'
+                + '<div class="blog-item-summary">' + escapeHtml(p.summary || '') + '</div>'
+                + '<div class="blog-item-meta">' + tags + ' ' + formatDate(p.createdAt) + '</div>'
+                + '</li>';
+        }
+        list.innerHTML = html;
+    });
+}
+
+// 글 상세 보기
+function showBlogDetail(postId) {
+    loadBlogPost(postId, function(post) {
+        if (!post) { alert('글을 찾을 수 없습니다.'); return; }
+        document.getElementById('detail-title').textContent = post.title;
+        document.getElementById('detail-meta').innerHTML =
+            formatDate(post.createdAt) + (post.author ? ' · ' + escapeHtml(post.author) : '');
+        // content를 HTML로 렌더링 (줄바꿈 → <p> 태그)
+        var content = post.content || '';
+        var paragraphs = content.split('\n\n');
+        var contentHtml = '';
+        for (var i = 0; i < paragraphs.length; i++) {
+            var para = paragraphs[i].trim();
+            if (!para) continue;
+            if (para.indexOf('## ') === 0) {
+                contentHtml += '<h2>' + escapeHtml(para.substring(3)) + '</h2>';
+            } else if (para.indexOf('### ') === 0) {
+                contentHtml += '<h3>' + escapeHtml(para.substring(4)) + '</h3>';
+            } else {
+                contentHtml += '<p>' + escapeHtml(para).replace(/\n/g, '<br>') + '</p>';
+            }
+        }
+        document.getElementById('detail-content').innerHTML = contentHtml;
+
+        document.getElementById('blog-list-view').style.display = 'none';
+        document.getElementById('blog-detail-view').classList.add('active');
+    });
+}
+
+// 목록으로 돌아가기
+function showBlogList() {
+    document.getElementById('blog-detail-view').classList.remove('active');
+    document.getElementById('blog-list-view').style.display = 'block';
+}
+
+function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+// URL 파라미터로 특정 글 바로 열기
+var urlParams = new URLSearchParams(window.location.search);
+var postParam = urlParams.get('post');
+
+renderBlogList();
+if (postParam) {
+    setTimeout(function() { showBlogDetail(postParam); }, 500);
+}
+</script>
+</body>
+</html>
