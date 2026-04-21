@@ -316,35 +316,87 @@
     }
   }
 
-  /* ──── 방문자 카운터 ──── */
+  /* ──── 방문자 카운터 (Firestore 실시간) ──── */
+  var VISITOR_API = 'https://firestore.googleapis.com/v1/projects/mbtitarot-a02c6/databases/(default)/documents/stats/visitors';
+  var VISITOR_LANGS = ['ko','en','ja','es','pt','fr','de'];
+
   function updateVisitorCounter() {
     var currentLang = window.getLang ? window.getLang() : 'ko';
-    var data = {};
-    try {
-      data = JSON.parse(localStorage.getItem('mystical_visitors') || '{}');
-    } catch(e) { data = {}; }
 
-    // 언어별 카운트 +1
-    var langs = ['ko','en','ja','es','pt','fr','de'];
-    for (var i = 0; i < langs.length; i++) {
-      if (!data[langs[i]]) data[langs[i]] = 0;
+    // 세션당 1회만 카운트 (같은 탭에서 중복 방지)
+    if (sessionStorage.getItem('visitor_counted')) {
+      // 이미 카운트됨 - 데이터만 표시
+      fetchVisitorData();
+      return;
     }
-    data[currentLang] = (data[currentLang] || 0) + 1;
+    sessionStorage.setItem('visitor_counted', '1');
 
-    localStorage.setItem('mystical_visitors', JSON.stringify(data));
+    // Firestore에서 현재 데이터 읽기 → 증가 → 저장
+    fetch(VISITOR_API)
+      .then(function(r) {
+        if (r.ok) return r.json();
+        // 문서가 없으면 새로 생성
+        return null;
+      })
+      .then(function(doc) {
+        var fields = {};
+        if (doc && doc.fields) {
+          // 기존 데이터 가져오기
+          for (var i = 0; i < VISITOR_LANGS.length; i++) {
+            var l = VISITOR_LANGS[i];
+            fields[l] = { integerValue: String(parseInt(doc.fields[l] ? doc.fields[l].integerValue : '0')) };
+          }
+        } else {
+          for (var j = 0; j < VISITOR_LANGS.length; j++) {
+            fields[VISITOR_LANGS[j]] = { integerValue: '0' };
+          }
+        }
+        // 현재 언어 +1
+        var cur = parseInt(fields[currentLang] ? fields[currentLang].integerValue : '0');
+        fields[currentLang] = { integerValue: String(cur + 1) };
 
-    // 전체 합산
+        // Firestore에 저장 (PATCH = 생성 또는 업데이트)
+        return fetch(VISITOR_API, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fields: fields })
+        });
+      })
+      .then(function(r) { return r.json(); })
+      .then(function(doc) {
+        renderVisitorData(doc.fields);
+      })
+      .catch(function() {
+        // 실패 시 로컬 폴백
+        renderVisitorFallback();
+      });
+  }
+
+  function fetchVisitorData() {
+    fetch(VISITOR_API)
+      .then(function(r) { return r.json(); })
+      .then(function(doc) {
+        if (doc && doc.fields) renderVisitorData(doc.fields);
+      })
+      .catch(function() { renderVisitorFallback(); });
+  }
+
+  function renderVisitorData(fields) {
     var total = 0;
-    for (var k in data) { if (data.hasOwnProperty(k)) total += data[k]; }
-
-    // 화면 업데이트
+    for (var i = 0; i < VISITOR_LANGS.length; i++) {
+      var l = VISITOR_LANGS[i];
+      var cnt = parseInt(fields[l] ? fields[l].integerValue : '0');
+      total += cnt;
+      var el = document.getElementById('vc-' + l);
+      if (el) el.textContent = cnt.toLocaleString();
+    }
     var totalEl = document.getElementById('visitor-total');
     if (totalEl) totalEl.textContent = total.toLocaleString();
+  }
 
-    for (var j = 0; j < langs.length; j++) {
-      var el = document.getElementById('vc-' + langs[j]);
-      if (el) el.textContent = (data[langs[j]] || 0).toLocaleString();
-    }
+  function renderVisitorFallback() {
+    var totalEl = document.getElementById('visitor-total');
+    if (totalEl) totalEl.textContent = '-';
   }
 
   function loadCoupangAds() {
