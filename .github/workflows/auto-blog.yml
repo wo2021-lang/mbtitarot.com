@@ -1,0 +1,24 @@
+name: Auto Blog Post Generator
+
+on:
+  schedule:
+    # 매주 월요일, 목요일 오전 9시(한국시간) 실행 = UTC 0시
+    - cron: '0 0 * * 1,4'
+  workflow_dispatch: # 수동 실행 가능
+
+jobs:
+  generate-blog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Generate and publish blog post
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python scripts/auto-blog.py
