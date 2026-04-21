@@ -2193,6 +2193,52 @@ body {
 
 /* Ad slot → 상단에서 통합 정의 */
 
+/* Recent blog section on home */
+.recent-blog-section {
+  max-width: 340px; margin: 20px auto 10px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px; padding: 16px 18px;
+}
+.recent-blog-title {
+  color: var(--gold-light); font-size: 0.95rem;
+  margin: 0 0 12px 0; font-weight: bold;
+}
+.recent-blog-list {
+  list-style: none; padding: 0; margin: 0;
+}
+.recent-blog-list li {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-subtle);
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.recent-blog-list li:last-child { border-bottom: none; }
+.recent-blog-list li:hover { opacity: 0.8; }
+.recent-blog-list li a {
+  text-decoration: none; display: block;
+}
+.recent-blog-item-title {
+  color: var(--text-primary); font-size: 0.88rem;
+  font-weight: 600; margin-bottom: 4px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.recent-blog-item-meta {
+  color: var(--text-dim); font-size: 0.72rem;
+}
+.recent-blog-loading {
+  color: var(--text-dim); font-size: 0.82rem;
+  text-align: center; padding: 12px 0;
+  cursor: default !important;
+}
+.recent-blog-more {
+  display: block; text-align: center;
+  color: var(--gold); font-size: 0.82rem;
+  text-decoration: none; margin-top: 10px;
+  font-weight: 600;
+}
+.recent-blog-more:hover { color: var(--gold-light); }
+
 /* Landing features row */
 .landing-features {
   display: flex; gap: 20px;

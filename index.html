@@ -220,6 +220,15 @@
             </button>
         </div>
 
+        <!-- 최근 블로그 소식 -->
+        <div class="recent-blog-section" id="recent-blog-section">
+            <h4 class="recent-blog-title">최근 소식</h4>
+            <ul class="recent-blog-list" id="recent-blog-list">
+                <li class="recent-blog-loading">불러오는 중...</li>
+            </ul>
+            <a href="blog.html" class="recent-blog-more">더보기 →</a>
+        </div>
+
         <div class="landing-features">
             <div class="feature-item">
                 <span>🧠</span>
@@ -1103,6 +1112,49 @@
 <script src="js/solar-terms.js"></script>
 <script src="js/saju.js"></script>
 <script src="js/app.js"></script>
+<script>
+// 최근 블로그 소식 로드 (Firestore REST API)
+(function() {
+  var listEl = document.getElementById('recent-blog-list');
+  if (!listEl) return;
+  var url = 'https://firestore.googleapis.com/v1/projects/mbtitarot-a02c6/databases/(default)/documents:runQuery';
+  var body = JSON.stringify({
+    structuredQuery: {
+      from: [{ collectionId: 'posts' }],
+      orderBy: [{ field: { fieldPath: 'createdAt' }, direction: 'DESCENDING' }],
+      limit: 3
+    }
+  });
+  fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: body
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(results) {
+    var html = '';
+    for (var i = 0; i < results.length; i++) {
+      var doc = results[i].document;
+      if (!doc) continue;
+      var f = doc.fields;
+      var title = f.title ? f.title.stringValue : '';
+      var cat = f.category ? f.category.stringValue : '';
+      var ts = f.createdAt ? f.createdAt.timestampValue : '';
+      var docId = doc.name.split('/').pop();
+      var date = ts ? ts.substring(0, 10).replace(/-/g, '.') : '';
+      html += '<li><a href="blog.html#' + docId + '">'
+        + '<div class="recent-blog-item-title">' + title + '</div>'
+        + '<div class="recent-blog-item-meta">' + cat + (date ? ' · ' + date : '') + '</div>'
+        + '</a></li>';
+    }
+    if (html) listEl.innerHTML = html;
+    else listEl.innerHTML = '<li class="recent-blog-loading">아직 소식이 없습니다</li>';
+  })
+  .catch(function() {
+    listEl.innerHTML = '<li class="recent-blog-loading">소식을 불러올 수 없습니다</li>';
+  });
+})();
+</script>
 
 </body>
 </html>
