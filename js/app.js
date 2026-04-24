@@ -402,11 +402,10 @@
   function loadCoupangAds() {
     var lang = window.getLang ? window.getLang() : 'en';
     document.querySelectorAll('.coupang-ko-only').forEach(function(el) {
-      if (lang === 'ko') {
-        el.style.display = '';
-      } else {
-        el.style.display = 'none';
-      }
+      el.style.display = (lang === 'ko') ? '' : 'none';
+    });
+    document.querySelectorAll('.amazon-ja-only').forEach(function(el) {
+      el.style.display = (lang === 'ja') ? '' : 'none';
     });
     // iframe 클릭 감지 (blur 방식)
     window.addEventListener('blur', function() {

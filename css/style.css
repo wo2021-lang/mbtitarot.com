@@ -1782,6 +1782,28 @@ body {
     width: 100%;
 }
 .coupang-notice strong { color: #ff6b6b; }
+
+/* Amazon JP affiliate banner */
+.ad-slot.amazon-ja-only {
+    display: none; border: none;
+}
+.amazon-banner {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    width: 100%; padding: 14px 16px;
+    background: linear-gradient(135deg, #232f3e, #37475a);
+    border: 1px solid #f90; border-radius: 12px;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.amazon-banner:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 153, 0, 0.3);
+}
+.amazon-banner-icon { font-size: 1.5rem; }
+.amazon-banner-text {
+    color: #fff; font-size: 0.85rem; font-weight: 600;
+    letter-spacing: 0.3px;
+}
 .coupang-cooldown { color: var(--text-dim); font-size: 0.75rem; }
 
 /* ======== AI 로딩 애니메이션 ======== */
