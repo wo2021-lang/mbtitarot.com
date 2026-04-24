@@ -1802,6 +1802,37 @@ body {
 .amazon-banner-icon { font-size: 1.5rem; }
 .amazon-banner-text {
     color: #fff; font-size: 0.85rem; font-weight: 600;
+}
+
+/* Amazon JP 상단 큰 배너 */
+.amazon-top-banner {
+    display: none; width: 100%; margin: 4px 0;
+}
+.amazon-banner-large {
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%; padding: 16px 20px;
+    background: linear-gradient(135deg, #131921, #232f3e 60%, #37475a);
+    border: 2px solid #f90; border-radius: 14px;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(255, 153, 0, 0.15);
+}
+.amazon-banner-large:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 153, 0, 0.35);
+}
+.amazon-banner-left { display: flex; flex-direction: column; gap: 3px; }
+.amazon-logo-text {
+    color: #f90; font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.5px; text-transform: lowercase;
+}
+.amazon-banner-title {
+    color: #fff; font-size: 1rem; font-weight: 700;
+}
+.amazon-banner-sub {
+    color: #adb5bd; font-size: 0.75rem;
+}
+.amazon-banner-emoji { font-size: 2rem; }
     letter-spacing: 0.3px;
 }
 .coupang-cooldown { color: var(--text-dim); font-size: 0.75rem; }
