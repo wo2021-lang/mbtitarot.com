@@ -405,7 +405,7 @@
       el.style.display = (lang === 'ko') ? '' : 'none';
     });
     document.querySelectorAll('.amazon-ja-only').forEach(function(el) {
-      el.style.display = (lang === 'ja') ? '' : 'none';
+      el.style.display = (lang === 'ja') ? 'flex' : 'none';
     });
     // iframe 클릭 감지 (blur 방식)
     window.addEventListener('blur', function() {
