@@ -107,5 +107,13 @@
         }
       }
     }
+
+    // 서브 페이지 광고 표시/숨김
+    document.querySelectorAll('.coupang-ko-only').forEach(function(el) {
+      el.style.display = (currentLang === 'ko') ? 'block' : 'none';
+    });
+    document.querySelectorAll('.amazon-ja-only').forEach(function(el) {
+      el.style.display = (currentLang === 'ja') ? 'block' : 'none';
+    });
   });
 })();

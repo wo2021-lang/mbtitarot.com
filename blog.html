@@ -235,6 +235,16 @@
             <button class="btn-write" onclick="onWriteClick()">✍ 글쓰기</button>
         </div>
         <p class="blog-desc">세상의 모든 이야기를 담는 블로그</p>
+        <div class="coupang-ko-only" style="text-align:center;margin:0 0 16px;display:none">
+            <p style="color:#ffd700;font-size:0.8rem;margin:0 0 4px">🛒 광고 클릭 시 <strong style="color:#ff6b6b">+50P</strong> 적립</p>
+            <iframe src="https://ads-partners.coupang.com/widgets.html?id=978458&template=carousel&trackingCode=AF1130043&subId=&width=320&height=100&tsource=" width="320" height="100" frameborder="0" scrolling="no" referrerpolicy="unsafe-url" browsingtopics style="max-width:100%"></iframe>
+        </div>
+        <div class="amazon-ja-only" style="text-align:center;margin:0 0 16px;display:none">
+            <a href="https://www.amazon.co.jp/s?k=%E3%82%BF%E3%83%AD%E3%83%83%E3%83%88+%E5%8D%A0%E3%81%84+%E6%9C%AC&tag=horse777-22" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 16px;background:linear-gradient(135deg,#232f3e,#37475a);border:1px solid #f90;border-radius:12px;text-decoration:none;max-width:480px;margin:0 auto">
+                <span style="font-size:1.5rem">📖</span>
+                <span style="color:#fff;font-size:0.85rem;font-weight:600">Amazonでタロット占い本を見る →</span>
+            </a>
+        </div>
         <div id="blog-loading" class="blog-loading">로딩 중...</div>
         <ul id="blog-list" class="blog-list"></ul>
         <div id="blog-empty" class="blog-empty" style="display:none;">
@@ -637,6 +647,20 @@ renderBlogList();
 if (postParam) {
     setTimeout(function() { showBlogDetail(postParam); }, 500);
 }
+
+// 블로그 광고 언어별 표시
+(function() {
+    var params = new URLSearchParams(window.location.search);
+    var lang = params.get('lang');
+    if (!lang) { try { lang = localStorage.getItem('mystical_lang'); } catch(e) {} }
+    if (!lang) lang = 'ko';
+    document.querySelectorAll('.coupang-ko-only').forEach(function(el) {
+        el.style.display = (lang === 'ko') ? 'block' : 'none';
+    });
+    document.querySelectorAll('.amazon-ja-only').forEach(function(el) {
+        el.style.display = (lang === 'ja') ? 'block' : 'none';
+    });
+})();
 </script>
 </body>
 </html>
