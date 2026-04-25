@@ -677,6 +677,11 @@
       return;
     }
     if (action === 'biorhythm') {
+      if (!usePoints(50)) {
+        showToast(L('points_lack'));
+        return;
+      }
+      showToast(L('points_deducted', {n: 50}));
       showScreen('biorhythm-screen');
       showTopNav(true);
       renderBiorhythmScreen();
