@@ -223,6 +223,13 @@
                     <span class="lb-sub" data-i18n="landing_lotto_sub">타로 카드로 뽑는 행운의 번호</span>
                 </div>
             </button>
+            <button class="landing-btn biorhythm" onclick="goLanding('biorhythm')">
+                <span class="lb-icon">📈</span>
+                <div class="lb-body">
+                    <span class="lb-text" data-i18n="landing_biorhythm">바이오리듬</span>
+                    <span class="lb-sub" data-i18n="landing_biorhythm_sub">신체 · 감성 · 지성 리듬 분석</span>
+                </div>
+            </button>
             <button class="landing-btn browse" onclick="goLanding('gallery')">
                 <span class="lb-icon">📖</span>
                 <div class="lb-body">
@@ -829,6 +836,79 @@
     </div>
 </div>
 
+<!-- ======== 바이오리듬 ======== -->
+<div id="biorhythm-screen" class="screen">
+    <div class="container">
+        <div class="hdr"><button class="back" onclick="showScreen('landing-screen')">←</button><h2 data-i18n="landing_biorhythm">바이오리듬</h2></div>
+        <p class="section-desc" id="bio-subtitle" data-i18n="bio_subtitle">생체리듬으로 보는 오늘의 컨디션</p>
+
+        <!-- 생년월일 미입력 시 -->
+        <div id="bio-need-birth" style="display:none;text-align:center;padding:40px 0">
+            <p id="bio-need-text" style="color:var(--text-secondary);margin-bottom:16px"></p>
+            <button class="btn btn-gold" onclick="openSetupModal()" id="bio-setup-btn">생년월일 입력</button>
+        </div>
+
+        <!-- 바이오리듬 본문 -->
+        <div id="bio-content" style="display:none">
+            <!-- 그래프 범례 -->
+            <div class="bio-legend">
+                <span class="bio-legend-item"><span class="bio-dot" style="background:#ff6b6b"></span><span data-i18n="bio_legend_physical">신체</span></span>
+                <span class="bio-legend-item"><span class="bio-dot" style="background:#4ecdc4"></span><span data-i18n="bio_legend_emotional">감성</span></span>
+                <span class="bio-legend-item"><span class="bio-dot" style="background:#ffd93d"></span><span data-i18n="bio_legend_intellectual">지성</span></span>
+            </div>
+
+            <!-- 캔버스 그래프 -->
+            <div class="bio-graph-wrap">
+                <canvas id="bio-canvas"></canvas>
+            </div>
+
+            <!-- 수치 카드 -->
+            <div class="bio-values">
+                <div class="bio-card physical">
+                    <div class="bio-card-icon">💪</div>
+                    <div class="bio-card-label" id="bio-p-label">신체</div>
+                    <div class="bio-card-value" id="bio-p-value">0%</div>
+                    <div class="bio-card-status" id="bio-p-status">보통</div>
+                </div>
+                <div class="bio-card emotional">
+                    <div class="bio-card-icon">💖</div>
+                    <div class="bio-card-label" id="bio-e-label">감성</div>
+                    <div class="bio-card-value" id="bio-e-value">0%</div>
+                    <div class="bio-card-status" id="bio-e-status">보통</div>
+                </div>
+                <div class="bio-card intellectual">
+                    <div class="bio-card-icon">🧠</div>
+                    <div class="bio-card-label" id="bio-i-label">지성</div>
+                    <div class="bio-card-value" id="bio-i-value">0%</div>
+                    <div class="bio-card-status" id="bio-i-status">보통</div>
+                </div>
+            </div>
+
+            <!-- 분석 -->
+            <div class="bio-analysis-section" id="bio-analysis">
+                <h3 id="bio-analysis-title">📊 오늘의 분석</h3>
+                <div class="bio-analysis-item" id="bio-analysis-physical"></div>
+                <div class="bio-analysis-item" id="bio-analysis-emotional"></div>
+                <div class="bio-analysis-item" id="bio-analysis-intellectual"></div>
+            </div>
+
+            <!-- 주의사항 -->
+            <div class="bio-warning-section" id="bio-warnings" style="display:none">
+                <h3 id="bio-warning-title">⚠ 주의사항</h3>
+                <ul id="bio-warning-list"></ul>
+            </div>
+
+            <!-- 행복 조언 -->
+            <div class="bio-advice-section">
+                <h3 id="bio-advice-title">🌟 오늘을 행복하게 보내는 법</h3>
+                <p id="bio-advice-text" class="bio-advice-text"></p>
+            </div>
+        </div>
+
+        <button class="btn-secondary" onclick="showScreen('landing-screen')" data-i18n="back_home" style="margin-top:16px;width:100%">🏠 홈으로</button>
+    </div>
+</div>
+
 <!-- ======== 별자리 운세 ======== -->
 <div id="zodiac-screen" class="screen">
     <div class="container">
@@ -1203,6 +1283,8 @@
 <script src="js/mbti.js"></script>
 <script src="js/solar-terms.js"></script>
 <script src="js/saju.js"></script>
+<script src="js/translations-biorhythm.js"></script>
+<script src="js/biorhythm.js"></script>
 <script src="js/app.js"></script>
 <script>
 // 최근 블로그 소식 로드 (Firestore REST API)

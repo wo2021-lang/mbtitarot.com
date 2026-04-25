@@ -676,6 +676,12 @@
       goToReading('lotto');
       return;
     }
+    if (action === 'biorhythm') {
+      showScreen('biorhythm-screen');
+      showTopNav(true);
+      renderBiorhythmScreen();
+      return;
+    }
     if (action === 'daily') {
       showScreen('home-screen');
       showTopNav(true);
@@ -835,6 +841,8 @@
 
     if (pendingAction === 'daily') {
       showScreen('home-screen'); showTopNav(true); updateHomeScreen();
+    } else if (pendingAction === 'biorhythm') {
+      showScreen('biorhythm-screen'); showTopNav(true); renderBiorhythmScreen();
     } else if (pendingAction === 'reading' && pendingReadingType) {
       goToReading(pendingReadingType);
     } else if (pendingAction === 'reading') {
@@ -2654,6 +2662,101 @@
     };
     var key = starKeyMap[yukchin];
     return key ? L('saju_fortune_' + key) : '';
+  }
+
+  /* ============ 바이오리듬 ============ */
+  function renderBiorhythmScreen() {
+    var birth = localStorage.getItem('mystical_birth');
+    var needEl = document.getElementById('bio-need-birth');
+    var contentEl = document.getElementById('bio-content');
+    var langCode = window.getLang ? window.getLang() : 'ko';
+    var t = (window.BIORHYTHM_I18N && window.BIORHYTHM_I18N[langCode]) || (window.BIORHYTHM_I18N && window.BIORHYTHM_I18N.ko) || {};
+
+    if (!birth) {
+      needEl.style.display = 'block';
+      contentEl.style.display = 'none';
+      var needText = document.getElementById('bio-need-text');
+      if (needText) needText.textContent = t.need_birth || '';
+      var setupBtn = document.getElementById('bio-setup-btn');
+      if (setupBtn) setupBtn.textContent = t.btn_setup || '';
+      return;
+    }
+    needEl.style.display = 'none';
+    contentEl.style.display = 'block';
+
+    var bio = window.BIORHYTHM.getTodayBio(birth);
+    var analysis = window.BIORHYTHM.getAnalysis(bio, langCode);
+
+    // 수치 카드 업데이트
+    var pVal = document.getElementById('bio-p-value');
+    var eVal = document.getElementById('bio-e-value');
+    var iVal = document.getElementById('bio-i-value');
+    if (pVal) pVal.textContent = (bio.physical >= 0 ? '+' : '') + bio.physical + '%';
+    if (eVal) eVal.textContent = (bio.emotional >= 0 ? '+' : '') + bio.emotional + '%';
+    if (iVal) iVal.textContent = (bio.intellectual >= 0 ? '+' : '') + bio.intellectual + '%';
+
+    // 라벨
+    var pLbl = document.getElementById('bio-p-label');
+    var eLbl = document.getElementById('bio-e-label');
+    var iLbl = document.getElementById('bio-i-label');
+    if (pLbl) pLbl.textContent = t.legend_physical || '';
+    if (eLbl) eLbl.textContent = t.legend_emotional || '';
+    if (iLbl) iLbl.textContent = t.legend_intellectual || '';
+
+    // 상태
+    var statusMap = { excellent: t.status_excellent, good: t.status_good, normal: t.status_normal, critical: t.status_critical, low: t.status_low, caution: t.status_caution, poor: t.status_poor };
+    var pSt = document.getElementById('bio-p-status');
+    var eSt = document.getElementById('bio-e-status');
+    var iSt = document.getElementById('bio-i-status');
+    if (pSt) { pSt.textContent = statusMap[analysis.physical.level] || ''; pSt.className = 'bio-card-status level-' + analysis.physical.level; }
+    if (eSt) { eSt.textContent = statusMap[analysis.emotional.level] || ''; eSt.className = 'bio-card-status level-' + analysis.emotional.level; }
+    if (iSt) { iSt.textContent = statusMap[analysis.intellectual.level] || ''; iSt.className = 'bio-card-status level-' + analysis.intellectual.level; }
+
+    // 카드 색상
+    var pCard = document.querySelector('.bio-card.physical');
+    var eCard = document.querySelector('.bio-card.emotional');
+    var iCard = document.querySelector('.bio-card.intellectual');
+    if (pCard) pCard.style.borderTopColor = '#ff6b6b';
+    if (eCard) eCard.style.borderTopColor = '#4ecdc4';
+    if (iCard) iCard.style.borderTopColor = '#ffd93d';
+
+    // 분석 텍스트
+    var aTitle = document.getElementById('bio-analysis-title');
+    if (aTitle) aTitle.textContent = t.analysis_title || '';
+
+    var aP = document.getElementById('bio-analysis-physical');
+    var aE = document.getElementById('bio-analysis-emotional');
+    var aI = document.getElementById('bio-analysis-intellectual');
+    if (aP) aP.innerHTML = '<h4 style="color:#ff6b6b">' + analysis.physical.label + ' (' + (bio.physical >= 0 ? '+' : '') + bio.physical + '%)</h4><p>' + analysis.physical.analysis + '</p>';
+    if (aE) aE.innerHTML = '<h4 style="color:#4ecdc4">' + analysis.emotional.label + ' (' + (bio.emotional >= 0 ? '+' : '') + bio.emotional + '%)</h4><p>' + analysis.emotional.analysis + '</p>';
+    if (aI) aI.innerHTML = '<h4 style="color:#ffd93d">' + analysis.intellectual.label + ' (' + (bio.intellectual >= 0 ? '+' : '') + bio.intellectual + '%)</h4><p>' + analysis.intellectual.analysis + '</p>';
+
+    // 주의사항
+    var warnSection = document.getElementById('bio-warnings');
+    var warnList = document.getElementById('bio-warning-list');
+    var warnTitle = document.getElementById('bio-warning-title');
+    var warnings = [];
+    if (analysis.physical.warning) warnings.push(analysis.physical.warning);
+    if (analysis.emotional.warning) warnings.push(analysis.emotional.warning);
+    if (analysis.intellectual.warning) warnings.push(analysis.intellectual.warning);
+    if (warnings.length > 0) {
+      warnSection.style.display = 'block';
+      if (warnTitle) warnTitle.textContent = t.warning_title || '';
+      warnList.innerHTML = warnings.map(function(w) { return '<li>' + w + '</li>'; }).join('');
+    } else {
+      warnSection.style.display = 'none';
+    }
+
+    // 행복 조언
+    var advTitle = document.getElementById('bio-advice-title');
+    var advText = document.getElementById('bio-advice-text');
+    if (advTitle) advTitle.textContent = t.advice_title || '';
+    if (advText) advText.textContent = analysis.advice || '';
+
+    // 그래프 그리기
+    setTimeout(function() {
+      window.BIORHYTHM.drawGraph('bio-canvas', birth);
+    }, 100);
   }
 
   function showSajuAnalysis() {
