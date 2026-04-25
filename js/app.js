@@ -3003,6 +3003,7 @@
     // 올해 세운
     var thisYear = new Date().getFullYear();
     var yearStem = ((thisYear - 4) % 10 + 10) % 10;
+    var yearBranch = ((thisYear - 4) % 12 + 12) % 12;
     var yearYukchin = getYukchin(dm.stem, yearStem);
     var yearYukchinDisplay = window.getYukchinByLang ? getYukchinByLang(yearYukchin) : yearYukchin;
 
