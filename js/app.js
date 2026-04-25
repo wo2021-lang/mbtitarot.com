@@ -16,6 +16,37 @@
   function lang() { return window.getLang ? window.getLang() : 'ko'; }
   function isKo() { return lang() === 'ko'; }
 
+  /* ──── 커스텀 날짜 입력 헬퍼 ──── */
+  function getDateValue(groupId) {
+    var g = document.getElementById(groupId);
+    if (!g) return '';
+    var y = g.querySelector('.date-y');
+    var m = g.querySelector('.date-m');
+    var d = g.querySelector('.date-d');
+    if (!y || !m || !d || !y.value || !m.value || !d.value) return '';
+    var yv = parseInt(y.value), mv = parseInt(m.value), dv = parseInt(d.value);
+    if (isNaN(yv) || isNaN(mv) || isNaN(dv)) return '';
+    return yv + '-' + (mv < 10 ? '0' + mv : mv) + '-' + (dv < 10 ? '0' + dv : dv);
+  }
+  function setDateValue(groupId, val) {
+    var g = document.getElementById(groupId);
+    if (!g || !val) return;
+    var parts = val.split('-');
+    if (parts.length !== 3) return;
+    var y = g.querySelector('.date-y');
+    var m = g.querySelector('.date-m');
+    var d = g.querySelector('.date-d');
+    if (y) y.value = parseInt(parts[0]);
+    if (m) m.value = parseInt(parts[1]);
+    if (d) d.value = parseInt(parts[2]);
+  }
+  function clearDateValue(groupId) {
+    var g = document.getElementById(groupId);
+    if (!g) return;
+    var inputs = g.querySelectorAll('input');
+    inputs.forEach(function(inp) { inp.value = ''; });
+  }
+
   /* ──── 다국어 예제 질문 & placeholder ──── */
   var EXAMPLE_Q = {
     ko: {
@@ -248,13 +279,12 @@
     });
     var gs = document.getElementById('gallery-search');
     if (gs) gs.addEventListener('input', function () { renderGallery(this.value.trim()); });
-    var sb = document.getElementById('setup-birth');
-    if (sb) sb.addEventListener('change', updateZodiacPreview);
-
-    // 날짜 입력 연도 4자리 제한 (change에서만)
-    document.querySelectorAll('input[type="date"]').forEach(function(inp) {
-      inp.addEventListener('change', fixDateYear);
-    });
+    var sbg = document.getElementById('setup-birth-group');
+    if (sbg) {
+      sbg.querySelectorAll('input').forEach(function(inp) {
+        inp.addEventListener('change', updateZodiacPreview);
+      });
+    }
 
     initPoints();
     initParticles();
@@ -564,15 +594,6 @@
     init();
   }
 
-  function fixDateYear(e) {
-    var val = e.target.value;
-    if (!val) return;
-    var parts = val.split('-');
-    if (parts[0] && parts[0].length > 4) {
-      parts[0] = parts[0].substring(0, 4);
-      e.target.value = parts.join('-');
-    }
-  }
 
 
   function toggleKoreanOnly(lang) {
@@ -742,8 +763,7 @@
     }
     var birth = localStorage.getItem('mystical_birth');
     if (birth) {
-      var el = document.getElementById('setup-birth');
-      if (el) el.value = birth;
+      setDateValue('setup-birth-group', birth);
       updateZodiacPreview();
     }
   };
@@ -776,7 +796,7 @@
   }
 
   function updateZodiacPreview() {
-    var birth = document.getElementById('setup-birth').value;
+    var birth = getDateValue('setup-birth-group');
     if (!birth) return;
     var parts = birth.split('-');
     var month = parseInt(parts[1]), day = parseInt(parts[2]);
@@ -794,7 +814,7 @@
 
   window.saveSetup = function () {
     var mbti = selectedAxes.EI + selectedAxes.SN + selectedAxes.TF + selectedAxes.JP;
-    var birth = document.getElementById('setup-birth').value;
+    var birth = getDateValue('setup-birth-group');
     var hour = document.getElementById('setup-birth-hour') ? document.getElementById('setup-birth-hour').value : '';
     var gender = document.querySelector('input[name="setup-gender"]:checked');
     if (!birth) { showToast(L('enter_birth')); return; }
@@ -1257,12 +1277,12 @@
     window.currentReadingType = type;
     // 궁합/택일은 질문 자동 생성
     if (type === 'compatibility') {
-      var pBirth = document.getElementById('partner-birth');
-      if (pBirth && pBirth.value) {
-        var pYear = parseInt(pBirth.value.split('-')[0]);
+      var pBirthVal = getDateValue('partner-birth-group');
+      if (pBirthVal) {
+        var pYear = parseInt(pBirthVal.split('-')[0]);
         if (pYear < 1920 || pYear > 2025) {
           showToast(L('invalid_birth'));
-          pBirth.value = '';
+          clearDateValue('partner-birth-group');
           return;
         }
       }
@@ -2258,11 +2278,11 @@
   window.analyzeDatepick = function () {
     var birth = localStorage.getItem('mystical_birth');
     if (!birth) { showToast(L('datepick_need_birth')); return; }
-    var dateA = document.getElementById('datepick-a');
-    var dateB = document.getElementById('datepick-b');
-    if (!dateA || !dateB || !dateA.value || !dateB.value) { showToast(L('datepick_need_dates')); return; }
-    var startDate = new Date(dateA.value);
-    var endDate = new Date(dateB.value);
+    var dateAVal = getDateValue('datepick-a-group');
+    var dateBVal = getDateValue('datepick-b-group');
+    if (!dateAVal || !dateBVal) { showToast(L('datepick_need_dates')); return; }
+    var startDate = new Date(dateAVal);
+    var endDate = new Date(dateBVal);
     if (endDate <= startDate) { showToast(L('datepick_range_error')); return; }
     var diffDays = Math.round((endDate - startDate) / (1000*60*60*24));
     if (diffDays > 90) { showToast(L('datepick_range_limit')); return; }

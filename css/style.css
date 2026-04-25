@@ -2462,6 +2462,7 @@ body {
 }
 .field input[type="text"],
 .field input[type="date"],
+.field input[type="number"],
 .field select,
 .field textarea {
   width: 100%; padding: 12px 14px;
@@ -2469,6 +2470,22 @@ body {
   color: var(--text-primary); background: var(--bg-secondary);
   border: 1px solid var(--border-subtle); border-radius: 10px;
   outline: none; transition: border-color 0.3s;
+}
+/* 커스텀 날짜 입력 */
+.custom-date-inputs {
+  display: flex; align-items: center; gap: 6px;
+}
+.custom-date-inputs input[type="number"] {
+  width: auto; flex: 1; text-align: center;
+  padding: 12px 6px; -moz-appearance: textfield;
+}
+.custom-date-inputs input[type="number"]::-webkit-inner-spin-button,
+.custom-date-inputs input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none; margin: 0;
+}
+.custom-date-inputs .date-y { flex: 1.5; }
+.custom-date-inputs .date-lbl {
+  color: var(--text-dim); font-size: 0.85rem; white-space: nowrap;
 }
 .field input:focus, .field select:focus, .field textarea:focus {
   border-color: var(--gold);
