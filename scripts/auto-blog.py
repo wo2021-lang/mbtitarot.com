@@ -13,7 +13,7 @@ import datetime
 
 # ── 설정 ──
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
-GEMINI_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={GEMINI_API_KEY}"
+GEMINI_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key={GEMINI_API_KEY}"
 FIRESTORE_URL = "https://firestore.googleapis.com/v1/projects/mbtitarot-a02c6/databases/(default)/documents/posts"
 
 # ── 주제 풀 (랜덤 선택) ──
@@ -149,15 +149,31 @@ def generate_blog_post(topic_info):
     }
 
     data = json.dumps(body).encode("utf-8")
-    req = urllib.request.Request(
-        GEMINI_URL,
-        data=data,
-        headers={"Content-Type": "application/json"},
-        method="POST"
-    )
 
-    with urllib.request.urlopen(req, timeout=60) as resp:
-        result = json.loads(resp.read().decode("utf-8"))
+    # 재시도 로직 (429 에러 대응)
+    import time
+    result = None
+    for attempt in range(3):
+        try:
+            req = urllib.request.Request(
+                GEMINI_URL,
+                data=data,
+                headers={"Content-Type": "application/json"},
+                method="POST"
+            )
+            with urllib.request.urlopen(req, timeout=90) as resp:
+                result = json.loads(resp.read().decode("utf-8"))
+            break
+        except urllib.error.HTTPError as e:
+            if e.code == 429 and attempt < 2:
+                wait = 30 * (attempt + 1)
+                print(f"Rate limited, waiting {wait}s... (attempt {attempt+1}/3)")
+                time.sleep(wait)
+            else:
+                raise
+
+    if result is None:
+        raise Exception("Gemini API call failed after 3 attempts")
 
     # Gemini 응답에서 텍스트 추출
     text = result["candidates"][0]["content"]["parts"][0]["text"]
