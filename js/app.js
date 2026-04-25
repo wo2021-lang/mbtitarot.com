@@ -509,7 +509,7 @@
       return;
     }
     localStorage.setItem('mystical_last_checkin', today);
-    addPoints(50);
+    addPoints(100);
     showToast(L('checkin_ok'));
     checkDailyCheckinAvailable();
   };
@@ -517,9 +517,12 @@
   function checkDailyCheckinAvailable() {
     var today = new Date().toISOString().split('T')[0];
     var last = localStorage.getItem('mystical_last_checkin');
+    var isDone = (last === today);
+
+    // 포인트 모달 내 버튼
     var btn = document.getElementById('checkin-btn');
     if (btn) {
-      if (last === today) {
+      if (isDone) {
         btn.textContent = L('checkin_btn_done');
         btn.disabled = true;
         btn.style.opacity = '0.5';
@@ -527,6 +530,22 @@
         btn.textContent = L('checkin_btn');
         btn.disabled = false;
         btn.style.opacity = '1';
+      }
+    }
+
+    // 메인 화면 출석체크 배너
+    var mainBtn = document.getElementById('checkin-main-btn');
+    if (mainBtn) {
+      if (isDone) {
+        mainBtn.classList.add('done');
+        mainBtn.disabled = true;
+        var badge = mainBtn.querySelector('.checkin-badge');
+        if (badge) badge.textContent = L('checkin_done_badge');
+        var desc = mainBtn.querySelector('.checkin-desc');
+        if (desc) desc.textContent = L('checkin_done_desc');
+      } else {
+        mainBtn.classList.remove('done');
+        mainBtn.disabled = false;
       }
     }
   }
@@ -667,6 +686,8 @@
       return;
     }
     if (action === 'saju') {
+      if (!usePoints(100)) { showToast(L('points_lack')); return; }
+      showToast(L('points_deducted', {n: 100}));
       showTopNav(true);
       showSajuAnalysis();
       return;
@@ -1216,7 +1237,11 @@
     if (type === 'compatibility') { showScreen('compatibility-screen'); updateCompatMyInfo(); return; }
     if (type === 'datepick') { showScreen('datepick-screen'); return; }
     if (type === 'custom') { showScreen('custom-date-screen'); return; }
-    if (type === 'saju') { showSajuAnalysis(); return; }
+    if (type === 'saju') {
+      if (!usePoints(100)) { showToast(L('points_lack')); return; }
+      showToast(L('points_deducted', {n: 100}));
+      showSajuAnalysis(); return;
+    }
     if (type === 'lotto') {
       if (!usePoints(50)) { showToast(L('points_lack')); return; }
       showToast(L('points_deducted', {n: 50}));
@@ -3027,6 +3052,112 @@
     // 8. Health
     text += '<p>' + L('saju_header_health') + '</p>';
     text += '<p>' + L('saju_health_' + ohengKeyMap[dm.oheng]) + '</p>';
+
+    // ── 평생 사주팔자 심층 분석 ──
+    var dmOhKey = ohengKeyMap[dm.oheng];
+    var dmYYKey = dm.yinyang === '양' ? 'yang' : 'yin';
+    text += '<div class="saju-deep-section">';
+    text += '<h3 class="saju-deep-title">' + L('saju_header_lifetime') + '</h3>';
+
+    // 직업 적성
+    text += '<h4>' + L('saju_lifetime_career_title') + '</h4>';
+    text += '<p>' + L('saju_lifetime_career_' + dmOhKey + '_' + dmYYKey) + '</p>';
+
+    // 대인관계
+    text += '<h4>' + L('saju_lifetime_relation_title') + '</h4>';
+    text += '<p>' + L('saju_lifetime_rel_' + dmOhKey + '_' + dmYYKey) + '</p>';
+
+    // 평생 재물운
+    text += '<h4>' + L('saju_lifetime_wealth_title') + '</h4>';
+    var hasJeongjae = false, hasPyeonjae = false;
+    var ykKeys = ['year','month','day','hour'];
+    ykKeys.forEach(function(k) {
+      if (saju.yukchins[k] === '정재') hasJeongjae = true;
+      if (saju.yukchins[k] === '편재') hasPyeonjae = true;
+    });
+    if (hasJeongjae || hasPyeonjae) {
+      text += '<p>' + L('saju_lifetime_wealth_strong') + '</p>';
+    } else if (weakest[1] > 0) {
+      text += '<p>' + L('saju_lifetime_wealth_weak') + '</p>';
+    } else {
+      text += '<p>' + L('saju_lifetime_wealth_none') + '</p>';
+    }
+    text += '</div>';
+
+    // ── 올해 운세 상세 분석 ──
+    var yearOheng = OHENG_OF_CHEONGAN[yearStem];
+    var yearOhengDisplay = ohengNameFn(yearOheng);
+    var yukchinMeaningKey = starKeyMap[yearYukchin] ? 'saju_fortune_' + starKeyMap[yearYukchin] : '';
+
+    text += '<div class="saju-deep-section">';
+    text += '<h3 class="saju-deep-title">' + L('saju_header_year_detail', {year: thisYear}) + '</h3>';
+
+    // 올해 기운과 나의 사주
+    text += '<h4>' + L('saju_year_energy_title') + '</h4>';
+    text += '<p>' + L('saju_year_energy_text', {
+      year: thisYear,
+      yearStem: CHEONGAN[yearStem],
+      yearBranch: JIJI[yearBranch],
+      yearOheng: yearOhengDisplay,
+      dayStem: CHEONGAN[dm.stem],
+      yukchin: yearYukchinDisplay,
+      yukchinMeaning: yukchinMeaningKey ? L(yukchinMeaningKey) : ''
+    }) + '</p>';
+
+    // 월별 운세
+    text += '<h4>' + L('saju_year_monthly_title') + '</h4>';
+    text += '<p>' + L('saju_year_month_spring') + '</p>';
+    text += '<p>' + L('saju_year_month_summer') + '</p>';
+    text += '<p>' + L('saju_year_month_autumn') + '</p>';
+    text += '<p>' + L('saju_year_month_winter') + '</p>';
+
+    // 올해 연애운
+    text += '<h4>' + L('saju_year_love_title') + '</h4>';
+    var yearLoveKey = starKeyMap[yearYukchin];
+    text += '<p>' + (yearLoveKey ? L('saju_year_love_' + yearLoveKey) : '') + '</p>';
+    text += '</div>';
+
+    // ── 오늘의 운세 분석 ──
+    var todayDate = new Date();
+    var todayY = todayDate.getFullYear(), todayM = todayDate.getMonth() + 1, todayD = todayDate.getDate();
+    var todayPillar = window.getDayPillar ? window.getDayPillar(todayY, todayM, todayD) : null;
+    if (todayPillar) {
+      var todayStem = todayPillar.stem;
+      var todayBranch = todayPillar.branch;
+      var todayYukchin = getYukchin(dm.stem, todayStem);
+      var todayYukchinDisplay = window.getYukchinByLang ? getYukchinByLang(todayYukchin) : todayYukchin;
+      var todayOheng = OHENG_OF_CHEONGAN[todayStem];
+      var todayOhengDisplay = ohengNameFn(todayOheng);
+      var todayAdviceKey = starKeyMap[todayYukchin];
+
+      text += '<div class="saju-deep-section">';
+      text += '<h3 class="saju-deep-title">' + L('saju_header_today', {month: todayM, day: todayD}) + '</h3>';
+
+      // 오늘의 기운
+      text += '<h4>' + L('saju_today_energy_title') + '</h4>';
+      text += '<p>' + L('saju_today_energy_text', {
+        dayStem: CHEONGAN[todayStem],
+        dayBranch: JIJI[todayBranch],
+        dayOheng: todayOhengDisplay,
+        myStem: CHEONGAN[dm.stem],
+        yukchin: todayYukchinDisplay,
+        reading: todayAdviceKey ? L('saju_today_advice_' + todayAdviceKey) : ''
+      }) + '</p>';
+
+      // 오늘의 행동 지침
+      text += '<h4>' + L('saju_today_advice_title') + '</h4>';
+      text += '<p>' + (todayAdviceKey ? L('saju_today_advice_' + todayAdviceKey) : '') + '</p>';
+
+      // 오늘의 행운 포인트
+      var todayOhKey = ohengKeyMap[todayOheng];
+      text += '<h4>' + L('saju_today_lucky_title') + '</h4>';
+      text += '<p>' + L('saju_today_lucky_text', {
+        time: L('saju_lucky_' + (todayOhKey || luckyOhKey) + '_time'),
+        color: L('saju_lucky_' + (todayOhKey || luckyOhKey) + '_color'),
+        dir: L('saju_lucky_' + (todayOhKey || luckyOhKey) + '_dir')
+      }) + '</p>';
+      text += '</div>';
+    }
 
     // 9. Final
     text += '<p>' + L('saju_header_final') + '</p>';

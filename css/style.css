@@ -134,6 +134,50 @@ body {
     color: var(--text-dim); letter-spacing: 2px;
 }
 
+/* 출석체크 배너 */
+.checkin-banner {
+    width: 100%; max-width: 340px;
+    margin-bottom: 16px;
+}
+.checkin-banner-btn {
+    display: flex; align-items: center; gap: 12px;
+    width: 100%; padding: 14px 18px;
+    background: linear-gradient(135deg, #d4af37 0%, #f5d060 50%, #d4af37 100%);
+    border: none; border-radius: 14px;
+    cursor: pointer; transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(212,175,55,0.4);
+    animation: checkin-glow 2s infinite alternate;
+}
+.checkin-banner-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(212,175,55,0.5); }
+.checkin-banner-btn:active { transform: translateY(0); }
+.checkin-banner-btn.done {
+    background: linear-gradient(135deg, #8a8a8a 0%, #aaa 100%);
+    box-shadow: none; animation: none; cursor: default;
+}
+.checkin-icon { font-size: 2rem; }
+.checkin-text-area { flex: 1; text-align: left; }
+.checkin-title {
+    display: block; font-size: 1rem; font-weight: 800;
+    color: #1a1a1a; letter-spacing: 0.5px;
+}
+.checkin-desc {
+    display: block; font-size: 0.78rem;
+    color: #4a3a00; margin-top: 2px;
+}
+.checkin-badge {
+    font-size: 1.1rem; font-weight: 900;
+    color: #1a1a1a; background: rgba(255,255,255,0.5);
+    padding: 6px 12px; border-radius: 20px;
+    white-space: nowrap;
+}
+.checkin-banner-btn.done .checkin-title,
+.checkin-banner-btn.done .checkin-desc { color: #fff; }
+.checkin-banner-btn.done .checkin-badge { background: rgba(255,255,255,0.2); color: #fff; }
+@keyframes checkin-glow {
+    0% { box-shadow: 0 4px 15px rgba(212,175,55,0.4); }
+    100% { box-shadow: 0 4px 25px rgba(212,175,55,0.7), 0 0 10px rgba(245,208,96,0.3); }
+}
+
 /* 랜딩 버튼 그룹 */
 .landing-buttons {
     display: flex; flex-direction: column;
@@ -3468,6 +3512,34 @@ body {
 }
 .saju-expert-reading .expert-text p:last-child {
   margin-bottom: 0;
+}
+
+/* 사주 심층 분석 섹션 */
+.saju-deep-section {
+  margin: 24px 0;
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(212,175,55,0.06), rgba(124,58,237,0.04));
+  border: 1px solid rgba(212,175,55,0.2);
+  border-radius: 12px;
+}
+.saju-deep-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(212,175,55,0.25);
+}
+.saju-deep-section h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 16px 0 8px;
+}
+.saju-deep-section p {
+  margin-bottom: 12px;
+  line-height: 1.8;
+  color: var(--text-secondary);
 }
 
 /* 사주 홈 버튼 강조 */

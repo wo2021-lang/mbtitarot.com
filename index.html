@@ -175,6 +175,18 @@
             당신만을 위한 운명의 카드를 펼칩니다
         </p>
 
+        <!-- 출석체크 배너 -->
+        <div class="checkin-banner" id="checkin-banner">
+            <button class="checkin-banner-btn" onclick="doDailyCheckin()" id="checkin-main-btn">
+                <span class="checkin-icon">📅</span>
+                <div class="checkin-text-area">
+                    <span class="checkin-title" data-i18n="checkin_banner_title">출석체크</span>
+                    <span class="checkin-desc" data-i18n="checkin_banner_desc">매일 100포인트 무료!</span>
+                </div>
+                <span class="checkin-badge" data-i18n="checkin_badge">+100P</span>
+            </button>
+        </div>
+
         <div class="landing-buttons">
             <button class="landing-btn primary" onclick="goLanding('reading')">
                 <span class="lb-icon">🔮</span>
@@ -975,7 +987,7 @@
             <div style="font-size:2rem;font-weight:900;color:var(--gold);font-family:var(--font-serif)" id="modal-points-display">0P</div>
             <div style="font-size:0.8rem;color:var(--text-dim);margin-top:4px" data-i18n="points_current">현재 보유 포인트</div>
         </div>
-        <button class="btn btn-gold" onclick="doDailyCheckin()" id="checkin-btn" data-i18n="checkin_btn">📅 출석 체크 (+50P)</button>
+        <button class="btn btn-gold" onclick="doDailyCheckin()" id="checkin-btn" data-i18n="checkin_btn">📅 출석 체크 (+100P)</button>
         <button class="btn" onclick="closeModal('points-modal')" data-i18n="btn_close">닫기</button>
     </div>
 </div>
