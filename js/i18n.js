@@ -141,7 +141,7 @@
       points_current: '현재 보유 포인트',
       btn_card_pick: '카드 뽑기 ✦',
       hour_unknown: '모름',
-      landing_daily_free: '✦ 매일 무료 ✦',
+      landing_daily_free: '✦ 하루 1회 무료 ✦',
       daily_master_badge: '🔮 오늘의 타로 마스터 메시지',
       daily_master_closing: '✦ 타로 마스터의 마무리',
       question_placeholder_full: '예: 이번 달 재물운은 어떨까?'
@@ -277,7 +277,7 @@
       points_current: 'Current Balance',
       btn_card_pick: 'Pick Cards ✦',
       hour_unknown: 'Unknown',
-      landing_daily_free: '✦ Free Daily ✦',
+      landing_daily_free: '✦ Free 1x Daily ✦',
       daily_master_badge: '🔮 Today\'s Tarot Master Message',
       daily_master_closing: '✦ Tarot Master\'s Final Words',
       question_placeholder_full: 'e.g. How will my finances be this month?'
@@ -412,7 +412,7 @@
       points_current: '現在のポイント',
       btn_card_pick: 'カードを引く ✦',
       hour_unknown: '不明',
-      landing_daily_free: '✦ 毎日無料 ✦',
+      landing_daily_free: '✦ 1日1回無料 ✦',
       daily_master_badge: '🔮 今日のタロットマスターメッセージ',
       daily_master_closing: '✦ タロットマスターの締めくくり',
       question_placeholder_full: '例：今月の金運はどうですか？'
@@ -544,7 +544,7 @@
       points_current:'Saldo actual',
       btn_card_pick:'Elegir Cartas ✦',
       hour_unknown:'Desconocido',
-      landing_daily_free:'✦ Gratis diario ✦',
+      landing_daily_free:'✦ 1x Gratis al día ✦',
       daily_master_badge: '🔮 Mensaje del Maestro del Tarot de Hoy',
       daily_master_closing: '✦ Palabras Finales del Maestro',
       question_placeholder_full:'Ej: ¿Cómo estarán mis finanzas este mes?'
@@ -676,7 +676,7 @@
       points_current:'Saldo atual',
       btn_card_pick:'Escolher Cartas ✦',
       hour_unknown:'Desconhecido',
-      landing_daily_free:'✦ Grátis diário ✦',
+      landing_daily_free:'✦ 1x Grátis por dia ✦',
       daily_master_badge: '🔮 Mensagem do Mestre do Tarot de Hoje',
       daily_master_closing: '✦ Palavras Finais do Mestre',
       question_placeholder_full:'Ex: Como estarão minhas finanças este mês?'
@@ -808,7 +808,7 @@
       points_current:'Solde actuel',
       btn_card_pick:'Choisir les Cartes ✦',
       hour_unknown:'Inconnu',
-      landing_daily_free:'✦ Gratuit quotidien ✦',
+      landing_daily_free:'✦ 1x Gratuit par jour ✦',
       daily_master_badge: '🔮 Message du Maître du Tarot du Jour',
       daily_master_closing: '✦ Mot de la Fin du Maître',
       question_placeholder_full:'Ex: Comment seront mes finances ce mois-ci ?'
@@ -940,7 +940,7 @@
       points_current:'Aktueller Kontostand',
       btn_card_pick:'Karten ziehen ✦',
       hour_unknown:'Unbekannt',
-      landing_daily_free:'✦ Täglich kostenlos ✦',
+      landing_daily_free:'✦ 1x Kostenlos pro Tag ✦',
       daily_master_badge: '🔮 Botschaft des Tarot-Meisters',
       daily_master_closing: '✦ Abschlussworte des Meisters',
       question_placeholder_full:'z.B. Wie werden meine Finanzen diesen Monat?'

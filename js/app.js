@@ -954,6 +954,23 @@
   window.flipDailyCard = function () {
     if (dailyCardFlipped) return;
     if (!window.TAROT) { showToast('Loading...'); setTimeout(window.flipDailyCard, 300); return; }
+
+    // 하루 1회 무료, 이후 50P 차감
+    var todayStr = new Date().toISOString().slice(0, 10);
+    var lastFreeDaily = localStorage.getItem('mystical_daily_free');
+    if (lastFreeDaily === todayStr) {
+      // 이미 오늘 무료 사용함 → 50P 차감
+      if (!usePoints(50)) {
+        showToast(L('points_lack'));
+        return;
+      }
+      showToast(L('points_deducted', {n: 50}));
+    } else {
+      // 오늘 첫 사용 → 무료
+      localStorage.setItem('mystical_daily_free', todayStr);
+      showToast(L('today_free'));
+    }
+
     dailyCardFlipped = true;
     var inner = document.getElementById('daily-card-inner');
     if (inner) inner.classList.add('flipped');
