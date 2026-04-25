@@ -1291,13 +1291,29 @@
     if (type === 'datepick') currentQuestion = '어느 날짜가 더 좋을까요?';
     if (type === 'custom') currentQuestion = '이 날의 운세를 봐주세요';
 
-    // 궁합/택일은 무료, 나머지는 포인트 차감
+    // 포인트 차감 로직
+    // 궁합/택일: 항상 무료
+    // 오늘의 운세: 하루 1회 무료, 이후 50P
+    // 나머지: 50P
     if (type !== 'compatibility' && type !== 'datepick') {
-      if (!usePoints(50)) {
-        showToast(L('points_lack'));
-        return;
+      var isFree = false;
+      if (type === 'today') {
+        var todayStr = new Date().toISOString().slice(0, 10);
+        var lastFree = localStorage.getItem('mystical_today_free');
+        if (lastFree !== todayStr) {
+          isFree = true;
+          localStorage.setItem('mystical_today_free', todayStr);
+        }
       }
-      showToast(L('points_deducted', {n: 50}));
+      if (!isFree) {
+        if (!usePoints(50)) {
+          showToast(L('points_lack'));
+          return;
+        }
+        showToast(L('points_deducted', {n: 50}));
+      } else {
+        showToast(L('today_free'));
+      }
     }
     cardsToPick = 3;
     startShuffle();
